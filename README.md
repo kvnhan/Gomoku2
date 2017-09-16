@@ -1,1 +1,1 @@
-"# Gomoku2  WWWWW   " 
+"# Gomoku2" 

@@ -9,7 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
+	
 	public static void main(String[] args) {
+		//Does this work, please
 		FileReader fr = null;
 		BufferedReader br = null;
 		GomokuModel gm = new GomokuModel();
