@@ -1,1 +1,1 @@
-"# Gomoku2" 
+"# Gomoku2     " 
