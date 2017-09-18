@@ -46,6 +46,8 @@ public class GomokuModel {
 	}
 	// Set the board
 	public void setBoard(int Row, String Column, String stone){
+
+		setUpCol();
 		int newR = Row - 1;
 		int newC = columns.get(Column) - 1;
 		//TODO if stone is black, the it is X, else O
