@@ -1,5 +1,9 @@
 package SetUp;
 
+import java.io.PrintWriter;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class GomokuModel {
@@ -27,10 +31,24 @@ public class GomokuModel {
 		columns.put("O", 15);
 	}
 	
+	//Write to move_file 
+	public void writeFile(String path, String move){
+		try { 
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+		    out.println(move);
+		    out.flush();
+		    out.close();
+		  }
+		  catch (IOException e) {  
+		  }
+		
+		
+	}
+	// Set the board
 	public void setBoard(int Row, String Column, String stone){
 		int newR = Row - 1;
 		int newC = columns.get(Column) - 1;
-		//TODO if stone is black, the it is 1, else 0
+		//TODO if stone is black, the it is X, else O
 		String player = "X";
 		for(int i = 0; i < 15; i++){
 			if(i == newR){
@@ -43,6 +61,7 @@ public class GomokuModel {
 		}
 		
 	}
+	
 	public void showBoard(){
 		
 		System.out.println("+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+");

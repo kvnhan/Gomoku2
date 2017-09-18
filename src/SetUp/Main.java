@@ -27,7 +27,7 @@ public class Main {
         String fileSeparator = System.getProperty("file.separator");
         String textFile = parentPath + fileSeparator + "end_game.txt";
         File endFile = new File(textFile);
-        
+        /*
         while(true){
 	        //Check if end_game.txt exists
 	        if(!endFile.exists()){
@@ -60,7 +60,7 @@ public class Main {
 	        	break;
 	        }
         }    
-   
+   */
 		}catch(Exception e){
 			
 		}
