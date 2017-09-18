@@ -72,7 +72,7 @@ public class AlphaBetaPruning {
 
 	public Node nextNodeToMove(Node currentNode) {
 
-		//this.getMinimax(currentNode);		// Change this to see how different between two algorithms.
+		m.getMinimax(currentNode);		// Change this to see how different between two algorithms.
 		minimaxAlphaBetaPruning(currentNode, initializeAlpha(currentNode), initializeBeta(currentNode));
 		Node newNode = n.getMaxNodeInList(possibleNextMoveNodes);
 		possibleNextMoveNodes.removeAllElements();
