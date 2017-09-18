@@ -67,6 +67,7 @@ public class Game {
 		
 	}
 
+	// TODO: Machine Win does not work; Machine does not want to choose winning condition
 	public void machineMove(Node currentNode) {
 		Node newNode = n.initializeNodeWithInput(currentNode.board);
 		newNode = t.nextNodeToMove(newNode);

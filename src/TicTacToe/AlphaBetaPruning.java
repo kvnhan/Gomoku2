@@ -30,7 +30,7 @@ public class AlphaBetaPruning {
 			return m.miniMaxLeafNode(currentNode);
 		}
 		else if (currentNode.nextPlayer == "O") {
-			return this.minimaxAlpha_CurrentMaxNode(currentNode, alpha, beta);
+			return minimaxAlpha_CurrentMaxNode(currentNode, alpha, beta);
 		}
 		else return this.minimaxBeta_CurrentMinNode(currentNode, alpha, beta);
 	}
@@ -40,9 +40,10 @@ public class AlphaBetaPruning {
 		
 		for(int atIndex = 0; atIndex < allSuccessors.size(); atIndex++) {
 			Node aSuccessor = allSuccessors.get(atIndex);
-			int currentMin = this.minimaxAlphaBetaPruning(aSuccessor, alphaOfCurrentNode, betaOfCurrentNode);
+			int currentMin = minimaxAlphaBetaPruning(aSuccessor, alphaOfCurrentNode, betaOfCurrentNode);
 			betaOfCurrentNode = n.getMinTwoIntegers(betaOfCurrentNode, currentMin);
 			currentNode.heuristicValue = n.getMinTwoIntegers(currentNode.heuristicValue, betaOfCurrentNode);
+			
 			if(alphaOfCurrentNode >= betaOfCurrentNode) {
 				break;
 			}
@@ -60,6 +61,7 @@ public class AlphaBetaPruning {
 			int currentMax = this.minimaxAlphaBetaPruning(aSuccessor, alphaOfCurrentNode, betaOfCurrentNode);
 			alphaOfCurrentNode = n.getMaxTwoIntegers(alphaOfCurrentNode, currentMax);
 			currentNode.heuristicValue = n.getMaxTwoIntegers(currentNode.heuristicValue,alphaOfCurrentNode);
+			
 			if(alphaOfCurrentNode >= betaOfCurrentNode) {
 				break;
 			}

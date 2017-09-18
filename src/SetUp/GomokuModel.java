@@ -50,7 +50,7 @@ public class GomokuModel {
 		setUpCol();
 		int newR = Row - 1;
 		int newC = columns.get(Column) - 1;
-		//TODO if stone is black, the it is X, else O
+		//TODO: if stone is black, the it is X, else O
 		String player = "X";
 		for(int i = 0; i < 15; i++){
 			if(i == newR){
@@ -65,8 +65,8 @@ public class GomokuModel {
 	}
 	
 	public void showBoard(){
-		
-		System.out.println("+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+");
+		String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
+		System.out.println(rows);
 		for(int i = 0; i < 15; i++){
 			for(int j = 0; j < 15; j++){
 				b[i][j] = " ";
@@ -75,7 +75,7 @@ public class GomokuModel {
 				}else if(j == 14){
 					System.out.print(" | " + b[i][j] + " |");
 					System.out.println();
-					System.out.println("+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+");
+					System.out.println(rows);
 				}else{
 					
 					System.out.print(" | " + b[i][j]);
