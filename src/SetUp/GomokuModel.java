@@ -34,8 +34,8 @@ public class GomokuModel {
 	//Write to move_file 
 	public void writeFile(String path, String move){
 		try { 
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
-		    out.println(move);
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
+		    out.write(move);
 		    out.flush();
 		    out.close();
 		  }
