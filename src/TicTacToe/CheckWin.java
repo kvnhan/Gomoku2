@@ -1,4 +1,4 @@
-package TicTacToeMaster;
+package TicTacToe;
 
 public class CheckWin {
 	

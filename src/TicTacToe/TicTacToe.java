@@ -1,4 +1,4 @@
-package TicTacToeMaster;
+package TicTacToe;
 
 import java.io.*;
 import java.util.*;
@@ -9,15 +9,9 @@ public class TicTacToe {
 	public static int INFINITY = 100;
 	public TicTacToe() {}
 	public CheckWin c = new CheckWin();
-	public Node initializeNode() {
-		return new Node(); 
-	}
-	public Node initializeNodeWithInput(String[][] board) {
-		Node root = new Node();
-		root.board = board;
-		root.nextPlayer = "X";	//Always initialize machine as X node.
-		return root;
-	}
+	public Node n = new Node();
+	
+
 	/*
 	 * Input from file, Output board to console.
 	 */
@@ -237,7 +231,7 @@ public class TicTacToe {
 		else this.machineMove(newNode);
 	}
 	public void machineMove(Node currentNode) {
-		Node newNode = this.initializeNodeWithInput(currentNode.board);
+		Node newNode = n.initializeNodeWithInput(currentNode.board);
 		newNode = this.nextNodeToMove(newNode);
 		this.outputBoard(newNode.board);
 		if(c.checkWin(newNode) == true) System.out.println("Computer won!");
@@ -245,7 +239,7 @@ public class TicTacToe {
 		else this.humanMove(newNode);
 	}
 	public void gamePlay() {
-		Node root = this.initializeNode();
+		Node root = n.initializeNode();
 		this.outputBoard(root.board);
 		int player = this.getPlayer();
 		if(player == 1) { root.nextPlayer = "O"; this.humanMove(root); }
