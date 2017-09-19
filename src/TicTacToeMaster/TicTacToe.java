@@ -8,7 +8,7 @@ public class TicTacToe {
 	
 	public static int INFINITY = 100;
 	public TicTacToe() {}
-	public WinGame w = new WinGame();
+	public CheckWin c = new CheckWin();
 	public Node initializeNode() {
 		return new Node(); 
 	}
@@ -58,12 +58,12 @@ public class TicTacToe {
 	}	
 	//Check leaf node
 	public boolean isLeafNode(Node currentNode) {
-		return w.checkWin(currentNode) || (this.scanEmptySquareOnBoard(currentNode)==null);
+		return c.checkWin(currentNode) || (this.scanEmptySquareOnBoard(currentNode)==null);
 	}
 	// Only evaluate heuristicValue at leafNode.
 	public int evaluateHeuristicValue(Node currentNode) {
-		if(currentNode.nextPlayer == "X" && w.checkWin(currentNode)==true) return -1;
-		if(currentNode.nextPlayer == "O" && w.checkWin(currentNode)==true) return 1;
+		if(currentNode.nextPlayer == "X" && c.checkWin(currentNode)==true) return -1;
+		if(currentNode.nextPlayer == "O" && c.checkWin(currentNode)==true) return 1;
 		return 0;
 	}
 	
@@ -232,7 +232,7 @@ public class TicTacToe {
 		int[] humanInput = this.getCorrectInputFromHumanMove(currentNode);
 		newNode = this.getSuccessor(currentNode, humanInput);
 		this.outputBoard(newNode.board);
-		if(w.checkWin(newNode)==true) System.out.println("Congratulations. You won!");
+		if(c.checkWin(newNode)==true) System.out.println("Congratulations. You won!");
 		else if(this.isLeafNode(newNode) == true)  System.out.println("The game is draw");
 		else this.machineMove(newNode);
 	}
@@ -240,7 +240,7 @@ public class TicTacToe {
 		Node newNode = this.initializeNodeWithInput(currentNode.board);
 		newNode = this.nextNodeToMove(newNode);
 		this.outputBoard(newNode.board);
-		if(w.checkWin(newNode) == true) System.out.println("Computer won!");
+		if(c.checkWin(newNode) == true) System.out.println("Computer won!");
 		else if(this.isLeafNode(newNode) == true)  System.out.println("The game is draw");
 		else this.humanMove(newNode);
 	}
