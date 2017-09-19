@@ -25,15 +25,11 @@ public class Minimax {
 			}
 			else currentNode.heuristicValue = n.getMaxTwoIntegers(currentNode.heuristicValue, this.getMinimax(aSuccessor));	
 		}
-		if(n.possibleNextMoveNodes(currentNode) != null) {
-			possibleNextMoveNodes.add(currentNode);
-		}
+		t.nextMoveNotNull(currentNode);
 		return currentNode.heuristicValue;
 	}
 	public int miniMaxLeafNode(Node currentNode){
-		if(n.possibleNextMoveNodes(currentNode) != null) {
-			possibleNextMoveNodes.add(currentNode);
-		}
+		t.nextMoveNotNull(currentNode);
 		return w.evaluateHeuristicValue(currentNode);
 	}
 

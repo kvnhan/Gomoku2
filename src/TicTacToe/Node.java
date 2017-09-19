@@ -28,6 +28,7 @@ public class Node {
 	public Node initializeNode() {
 		return new Node(); 
 	}
+	
 	public Node initializeNodeWithInput(String[][] board) {
 		Node root = new Node();
 		root.board = board;
@@ -45,30 +46,42 @@ public class Node {
 	 * Get max/min.
 	 */
 	public int getMaxTwoIntegers(int anInteger, int anotherInteger) {
-		if(anInteger < anotherInteger) return anotherInteger;
+		if(anInteger < anotherInteger) {
+			return anotherInteger;
+		}
 		else return anInteger;
 	}
 	public int getMinTwoIntegers(int anInteger, int anotherInteger) {
-		if(anInteger > anotherInteger) return anotherInteger;
+		if(anInteger > anotherInteger) {
+			return anotherInteger;
+		}
 		else return anInteger;
 	}
 	public Node getMinNodeInList(Vector<Node> aVectorNode) {
 		Node minNode = aVectorNode.get(0);
 		int listSize = aVectorNode.size();
-		for(int index = 0; index < listSize; index++) 
-			if(minNode.heuristicValue > aVectorNode.get(index).heuristicValue) minNode = aVectorNode.get(index);
+		for(int index = 0; index < listSize; index++) {
+			if(minNode.heuristicValue > aVectorNode.get(index).heuristicValue) {
+				minNode = aVectorNode.get(index);
+			}
+		}
 		return minNode;
 	}
 	public Node getMaxNodeInList(Vector<Node> aVectorNode) {
 		Node maxNode = aVectorNode.get(0);
 		int listSize = aVectorNode.size();
-		for(int index = 0; index < listSize; index++) 
-			if(maxNode.heuristicValue < aVectorNode.get(index).heuristicValue) maxNode = aVectorNode.get(index);
+		for(int index = 0; index < listSize; index++) {
+			if(maxNode.heuristicValue < aVectorNode.get(index).heuristicValue) {
+				maxNode = aVectorNode.get(index);
+			}
+		}
 		return maxNode;
 	}
 	// Get next move
 	public Node possibleNextMoveNodes (Node currentNode) {
-		if(currentNode.atDepth == 1) return currentNode;
+		if(currentNode.atDepth == 1) {
+			return currentNode;
+		}
 		else return null;
 	}
 

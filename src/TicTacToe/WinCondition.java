@@ -3,6 +3,7 @@ package TicTacToe;
 public class WinCondition {
 	
 	// Checking winning node
+	// hard coded for 3x3, TODO: make it for 5x5
 		public boolean checkWin(Node currentNode) {
 			return (this.checkWinOnRow(currentNode)
 					||this.checkWinOnColumn(currentNode)

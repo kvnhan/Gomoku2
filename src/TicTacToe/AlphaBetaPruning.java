@@ -47,9 +47,7 @@ public class AlphaBetaPruning {
 			if(alphaOfCurrentNode >= betaOfCurrentNode) {
 				break;
 			}
-		}
-		if(n.possibleNextMoveNodes(currentNode)!=null) {
-			possibleNextMoveNodes.add(currentNode);
+			nextMoveNotNull(currentNode);
 		}
 		return betaOfCurrentNode;	
 	}
@@ -65,10 +63,10 @@ public class AlphaBetaPruning {
 			if(alphaOfCurrentNode >= betaOfCurrentNode) {
 				break;
 			}
+			
+			nextMoveNotNull(currentNode);
 		}
-		if(n.possibleNextMoveNodes(currentNode)!=null) {
-			possibleNextMoveNodes.add(currentNode);
-		}
+		
 		return alphaOfCurrentNode;
 	}
 
@@ -80,4 +78,10 @@ public class AlphaBetaPruning {
 		possibleNextMoveNodes.removeAllElements();
 		return newNode;
 	}	
+	
+	public void nextMoveNotNull(Node currentNode) {
+		if(n.possibleNextMoveNodes(currentNode)!=null) {
+			possibleNextMoveNodes.add(currentNode);
+		}
+	}
 }

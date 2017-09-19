@@ -19,7 +19,7 @@ public class Board {
 		String[][] board = new String[2][2];
 		String inputLine;
 		for(int line = 0; ((inputLine = bufferedReader.readLine()) != null); line++) {
-			board = this.addInputLineToRow(line, board, inputLine);
+			board = addInputLineToRow(line, board, inputLine);
 		}
 		bufferedReader.close();
 		return board;
@@ -67,8 +67,9 @@ public class Board {
 		int boardSize = aBoard.length;
 		String[][] newBoard = new String[boardSize][boardSize];
 		for(int row = 0; row < boardSize; row++) {
-			for(int column = 0; column < boardSize; column++) 
+			for(int column = 0; column < boardSize; column++) {
 				newBoard[row][column] = aBoard[row][column];
+			}
 		}
 		return newBoard;
 	}
@@ -81,7 +82,9 @@ public class Board {
 		int boardSize = currentNode.board.length;
 		for(int row = 0; row < boardSize; row++) {
 			for(int column = 0; column < boardSize; column++) {
-				if(currentNode.board[row][column] == null) return addValueToArray(row, column);
+				if(currentNode.board[row][column] == null) {
+					return addValueToArray(row, column);
+				}
 			}
 		}
 		return null;
@@ -110,7 +113,9 @@ public class Board {
 		WinCondition w = new WinCondition();
 		if(n.isLeafNode(currentNode) == true) return null;
 		else {
-			if(currentNode.nextPlayer=="X") return new Node(b.updateBoard(currentNode,emptySquareOnBoard),currentNode,w.evaluateHeuristicValue(currentNode),currentNode.atDepth+1,"O");
+			if(currentNode.nextPlayer=="X") {
+				return new Node(b.updateBoard(currentNode,emptySquareOnBoard),currentNode,w.evaluateHeuristicValue(currentNode),currentNode.atDepth+1,"O");
+			}
 			else return new Node(b.updateBoard(currentNode,emptySquareOnBoard),currentNode,w.evaluateHeuristicValue(currentNode),currentNode.atDepth+1,"X");
 		}
 	}

@@ -72,10 +72,12 @@ public class Game {
 		Node newNode = n.initializeNodeWithInput(currentNode.board);
 		newNode = t.nextNodeToMove(newNode);
 		b.outputBoard(newNode.board);
-		if (w.checkWin(newNode) == true)
+		if (w.checkWin(newNode) == true) {
 			System.out.println("\nXXX YOU LOST XXX\n");
-		else if (n.isLeafNode(newNode) == true)
+		}
+		else if (n.isLeafNode(newNode) == true) {
 			System.out.println(draw);
+		}
 		else
 			humanMove(newNode);
 	}
