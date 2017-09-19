@@ -5,18 +5,22 @@ public class WinCondition {
 	// Checking winning node
 	// hard coded for 3x3, TODO: make it for 5x5
 		public boolean checkWin(Node currentNode) {
-			return (this.checkWinOnRow(currentNode)
-					||this.checkWinOnColumn(currentNode)
-					||this.checkWinOnDiagonal(currentNode));
+			return (checkWinOnRow(currentNode)
+					||checkWinOnColumn(currentNode)
+					||checkWinOnDiagonal(currentNode));
 		}
 		public boolean checkWinOnRow(Node currentNode) {
 			for(int row = 0; row < currentNode.board.length; row++) {
 				int timesOfNodeRepeated = 0;
 				String scanForElement = currentNode.board[row][0];
-				if (scanForElement == null) break;
+				if (scanForElement == null) {
+					break;
+				}
 				for(int column = 1; column < currentNode.board.length; column ++) {
 					String nextString = currentNode.board[row][column];
-					if(nextString == null) break;
+					if(nextString == null) {
+						break;
+					}
 					else if (scanForElement.contentEquals(nextString) == false) break;
 						else timesOfNodeRepeated++;
 				}
@@ -28,10 +32,14 @@ public class WinCondition {
 			for(int column = 0; column < currentNode.board.length; column++) {
 				int timesOfNodeRepeated = 0;
 				String scanForElement = currentNode.board[0][column];
-				if (scanForElement == null) break;
+				if (scanForElement == null) {
+					break;
+				}
 				for(int row = 1; row < currentNode.board.length; row ++) {
 					String nextString = currentNode.board[row][column];
-					if(nextString == null) break;
+					if(nextString == null) {
+						break;
+					}
 					else if (scanForElement.contentEquals(nextString) == false) break;
 						else timesOfNodeRepeated++;
 				}
@@ -59,8 +67,12 @@ public class WinCondition {
 		
 		// Only evaluate heuristicValue at leafNode.
 		public int evaluateHeuristicValue(Node currentNode) {
-			if(currentNode.nextPlayer == "X" && checkWin(currentNode)==true) return -1;
-			if(currentNode.nextPlayer == "O" && checkWin(currentNode)==true) return 1;
+			if(currentNode.nextPlayer == "X" && checkWin(currentNode)==true) {
+				return -1;
+			}
+			if(currentNode.nextPlayer == "O" && checkWin(currentNode)==true) {
+				return 1;
+			}
 			return 0;
 		}
 
