@@ -17,21 +17,21 @@ public class Main {
 		
 		FileReader fr = null;
 		BufferedReader br = null;
-		Position pos = new Position(0, 0, 0);
 		GomokuModel gm = new GomokuModel();
 		MiniMax mmx = new MiniMax();
+		Position pos = new Position(0, 0, 0, " ", gm);
 		gm.setBoard(2, "B", "X");
 		gm.setBoard(2, "A", "O");
 		gm.showBoard();
-		pos = mmx.minimax(gm, 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos);
-		gm.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
-		gm.setBoard(1, "C", "O");
-		gm.showBoard();
-		pos = mmx.minimax(gm, 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos);
-		gm.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
-		gm.showBoard();
+		pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos, false);
+		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+		pos.g.showBoard();
+		pos.g.setBoard(2, "C", "O");
+		pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos, false);
+		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+		pos.g.showBoard();
 
-
+		
 		try{
 			
 		URL url = SetUp.Main.class.getProtectionDomain().getCodeSource().getLocation();

@@ -57,8 +57,8 @@ public class GomokuModel {
 		}
 		return c;
 	}
-	public void makeMove(GomokuModel gm, Integer h, Integer v, String value){
-		gm.b[h][v] = value;
+	public void makeMove(int h, int v, String value){
+		b[h][v] = value;
 	}
 	
 	// Set the board
@@ -109,7 +109,7 @@ public class GomokuModel {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if (b[i][j].equals(" ")) {
-					Position p = new Position(i,j, 0);
+					Position p = new Position(i,j, 0, " ", this);
 					empty.put(p, "empty");
 				}
 			}
@@ -123,7 +123,7 @@ public class GomokuModel {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if (b[i][j].equals(stone)) {
-					Position pos = new Position(i,j, 0);
+					Position pos = new Position(i,j, 0, stone, this);
 					p.put(pos, stone);
 				}
 			}
@@ -136,41 +136,40 @@ public class GomokuModel {
 		HashMap<Position, String> empty = new HashMap<Position, String>();
 		if(p.row - 1 >= 0){
 			if(b[p.row - 1][p.column].equals(" ")){
-				Position pos = new Position(p.row - 1,p.column, 0);
+				Position pos = new Position(p.row - 1,p.column, 0, p.stone, this);
 				empty.put(pos, "empty");
 			}
 			if (p.column - 1 >= 0) {
 				if (b[p.row - 1][p.column - 1].equals(" ")) {
-					Position pos = new Position(p.row - 1,p.column - 1, 0);
+					Position pos = new Position(p.row - 1,p.column - 1, 0, p.stone, this);
 					empty.put(pos, "empty");
 				}
 			}
 		}
 		if (p.column + 1 < n) {
 			if (b[p.row][p.column + 1].equals(" ")) {
-				Position pos = new Position(p.row,p.column + 1, 0);
+				Position pos = new Position(p.row,p.column + 1, 0, p.stone, this);
 				empty.put(pos, "empty");
 			}
 			if (p.row - 1 >= 0) {
 				if (b[p.row - 1][p.column + 1].equals(" ")) {
-					Position pos = new Position(p.row - 1,p.column + 1, 0);
+					Position pos = new Position(p.row - 1,p.column + 1, 0, p.stone, this);
 					empty.put(pos, "empty");
 				}
 			}
 		}
 		if (p.row + 1 < n) {
 			if (b[p.row + 1][p.column].equals(" ")) {
-				Position pos = new Position(p.row + 1,p.column, 0);
+				Position pos = new Position(p.row + 1,p.column, 0, p.stone, this);
 				empty.put(pos, "empty");
 			}
 			if (p.column + 1 < n) {
 				if (b[p.row + 1][p.column + 1].equals(" ")) {
-					Position pos = new Position(p.row + 1,p.column - 1, 0);
+					Position pos = new Position(p.row + 1,p.column + 1, 0, p.stone, this);
 					empty.put(pos, "empty");
 				}
 			}
 		}
-		
 		return empty;
 	}
 	
