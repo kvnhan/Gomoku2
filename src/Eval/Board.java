@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class Board {
 	
-public String[][] cells = new String[5][5];
+String[][] cells = new String[5][5];
 
 
 public Board(String[][] cells)
@@ -142,11 +142,21 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         	Path currpath = pathlist.get(j);
         	
         	if (currpath.path.size() == 1){
-        		tempscore += 10;
+            	if(currpath.player == "White"){
+            		score += 10;
+            	}
+            	else{
+            		score -= 10;
+            	}
         		continue;
         	}
         	if (currpath.path.size() == 2){
-        		tempscore += 50;
+            	if(currpath.player == "White"){
+            		score += 50;
+            	}
+            	else{
+            		score -= 50;
+            	}
         		continue;
         	}
     		Cell firstcell = currpath.path.getFirst();
@@ -163,16 +173,16 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
     		Integer diffjstart = second.horiz - firstcell.horiz;
     		Integer newistart = firstcell.vert - diffistart;
     		Integer newjstart = firstcell.horiz - diffjstart;
-    		if(newjstart > 4){
+    		if(newjstart > 4 || newjstart < 0){
     			newjstart = firstcell.horiz;
     		}
-    		if(newistart > 4){
+    		if(newistart > 4 || newistart < 0){
     			newistart = firstcell.vert;
     		}
-    		if(newj > 4){
+    		if(newj > 4 || newj < 0){
     			newj = lastcell.horiz;
     		}
-    		if(newi > 4){
+    		if(newi > 4 || newistart < 0){
     			newi = lastcell.vert;
     		}
     		
@@ -218,7 +228,7 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	
 	System.out.println("CURRENT NODE: " + (i) + "," + (j));
-	if (i < 14 && i > 0){
+	if (j > 0 && j < 4){
 		
 		if (cells[i][j-1]  == player){
 			Cell c = new Cell(i,j - 1);
@@ -235,7 +245,8 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				searchAroundHoriz(i, j-1, p, player);
 			}
 		}
-		else if (cells[i][j+1]  == player){
+	
+		if (cells[i][j+1]  == player){
 			Cell c = new Cell(i,j + 1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j+1 && c1.vert == i){
@@ -250,13 +261,14 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 			}
 		}
 	}
+	
 	return p.score;
 }
 
 private Integer searchAroundVert(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	System.out.println("CURRENT NODE: " + (i) + "," + (j));
-	if (i < 14 && i > 0){
+	if (i < 4 && i > 0  && j < 4 && j > 0){
 		if (cells[i-1][j]  == player){
 			Cell c = new Cell(i-1,j);
 			for (Cell c1 : p.path) {
@@ -271,7 +283,7 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				searchAroundVert(i-1, j, p, player);
 			}
 		}
-		else if (cells[i+1][j]  == player){
+		if (cells[i+1][j]  == player){
 			Cell c = new Cell(i+1,j);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j && c1.vert == i+1){
@@ -294,7 +306,7 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	System.out.println("CURRENT NODE: " + (i) + "," + (j));
-	if (i < 14 && i > 0){
+	if (i < 4 && i > 0  && j < 4 && j > 0){
 		if (cells[i+1][j+1] == player){
 			Cell c = new Cell(i+1,j+1);
 			for (Cell c1 : p.path) {
@@ -310,7 +322,7 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 			}
 		}
 		
-		else if (cells[i-1][j-1]  == player){
+		if (cells[i-1][j-1]  == player){
 			Cell c = new Cell(i-1,j-1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j-1 && c1.vert == i-1){
@@ -334,7 +346,7 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	System.out.println("CURRENT NODE: " + (i) + "," + (j));
-	if (i < 14 && i > 0){
+	if (i < 4 && i > 0  && j < 4 && j > 0){
 		if (cells[i-1][j+1] == player){
 			Cell c = new Cell(i-1,j+1);
 			for (Cell c1 : p.path) {
@@ -349,7 +361,7 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				searchAroundDiagUp(i-1, j+1, p, player);
 			}
 		}
-		else if (cells[i+1][j-1] == player){
+		if (cells[i+1][j-1] == player){
 			Cell c = new Cell(i+1,j-1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j-1 && c1.vert == i+1){
@@ -371,20 +383,22 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	}
 private LinkedList<Board>generateChildren(String player){
 	LinkedList<Board> children = new LinkedList<Board>();
-	for(int i=0; i<cells.length; i++) {
-        for(int j=0; j<cells[i].length; j++) {
-        	if(cells[i][j] == null){
-        		cells[i][j] = player;
-        		Board b = new Board(cells);
-        		children.add(b);
-        		cells[i][j] = null;
+	String[][] currcells = this.cells;
+	for(int i=0; i<currcells.length; i++) {
+        for(int j=0; j<currcells[i].length; j++) {
+        	if(currcells[i][j] == null){
+        		currcells[i][j] = player;
+        		String[][] newcells = currcells;
+        		Board cb = new Board(newcells);
+        		children.add(cb);
+        		currcells[i][j] = null;
         	}
         }
     }
 	return children;
 }
 
-private Integer minimax(Board b, Integer depth, String player, Integer alpha, Integer beta) {
+public Integer minimax(Board b, Integer depth, String player, Integer alpha, Integer beta) {
 	Integer best = 0; //temp
 	
 	//check if this is a leaf
@@ -396,7 +410,7 @@ private Integer minimax(Board b, Integer depth, String player, Integer alpha, In
         best = -200000000; // "negative infinity"
         LinkedList<Board> childBoards = b.generateChildren("White");
         for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, "White", alpha, beta);
+            Integer value = minimax(cb, depth+1, "Black", alpha, beta);
             best = Math.max(best, value);
             alpha = Math.max(alpha, best);
             if (beta <= alpha){
@@ -409,7 +423,7 @@ private Integer minimax(Board b, Integer depth, String player, Integer alpha, In
         best= 2000000; // "positive infinity"
         LinkedList<Board> childBoards = b.generateChildren("Black");
         for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, "Black", alpha, beta);
+            Integer value = minimax(cb, depth+1, "White", alpha, beta);
             best = Math.min( best, value);
             beta = Math.min( beta, value);
             if (beta <= alpha){
