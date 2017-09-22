@@ -10,7 +10,7 @@ import Eval.Board;
 import Eval.Cell;
 
 public class GomokuModel {
-	public int n = 5;
+	public int n = 3;
 	public String[][] b = new String[n][n];
 	Board board = new Board();
 	HashMap<String, Integer> columns = new HashMap<String, Integer>();

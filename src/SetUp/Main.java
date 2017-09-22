@@ -20,18 +20,16 @@ public class Main {
 		GomokuModel gm = new GomokuModel();
 		MiniMax mmx = new MiniMax();
 		Position pos = new Position(0, 0, 0, " ", gm);
-		gm.setBoard(2, "B", "X");
-		gm.setBoard(2, "A", "O");
+		gm.setBoard(1, "A", "X");
+		gm.setBoard(1, "C", "O");
+		gm.setBoard(1, "B", "X");
+		gm.setBoard(3, "A", "O");
 		gm.showBoard();
 		pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", false);
-		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
-		System.out.println("New Board");
+		pos.g.setBoard(pos.move.row + 1, gm.parseCol(pos.move.column + 1), "X");
 		pos.g.showBoard();
-		pos.g.setBoard(2, "C", "O");
-		pos.g.showBoard();
-		pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O",false);
-		pos.g.showBoard();
-		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+
+		
 
 		
 		try{

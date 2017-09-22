@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class Board {
 	
-public String[][] cells = new String[5][5];
+public String[][] cells = new String[3][3];
 
 
 public Board()
@@ -164,16 +164,16 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
     		Integer diffjstart = second.horiz - firstcell.horiz;
     		Integer newistart = firstcell.vert - diffistart;
     		Integer newjstart = firstcell.horiz - diffjstart;
-    		if(newjstart > 4 || newjstart < 0){
+    		if(newjstart > 2 || newjstart < 0){
     			newjstart = firstcell.horiz;
     		}
-    		if(newistart > 4 || newistart < 0){
+    		if(newistart > 2 || newistart < 0){
     			newistart = firstcell.vert;
     		}
-    		if(newj > 4 || newj < 0){
+    		if(newj > 2 || newj < 0){
     			newj = lastcell.horiz;
     		}
-    		if(newi > 4 || newistart < 0){
+    		if(newi > 2 || newistart < 0){
     			newi = lastcell.vert;
     		}
     		
@@ -218,7 +218,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
 private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	
-	if (j > 0 && j < 4){
+	if (j > 0 && j < 2){
 		
 		if (cells[i][j-1]  == player){
 			Cell c = new Cell(i,j - 1);
@@ -256,7 +256,7 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 private Integer searchAroundVert(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	
-	if (i < 4 && i > 0  && j < 4 && j > 0){
+	if (i < 2 && i > 0  && j < 2 && j > 0){
 		if (cells[i-1][j]  == player){
 			Cell c = new Cell(i-1,j);
 			for (Cell c1 : p.path) {
@@ -291,7 +291,7 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	if (i < 4 && i > 0  && j < 4 && j > 0){
+	if (i < 2 && i > 0  && j < 2 && j > 0){
 		if (cells[i+1][j+1] == player){
 			Cell c = new Cell(i+1,j+1);
 			for (Cell c1 : p.path) {
@@ -328,7 +328,7 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	if (i < 4 && i > 0  && j < 4 && j > 0){
+	if (i < 2 && i > 0  && j < 2 && j > 0){
 		if (cells[i-1][j+1] == player){
 			Cell c = new Cell(i-1,j+1);
 			for (Cell c1 : p.path) {
