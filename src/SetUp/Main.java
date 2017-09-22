@@ -23,13 +23,15 @@ public class Main {
 		gm.setBoard(2, "B", "X");
 		gm.setBoard(2, "A", "O");
 		gm.showBoard();
-		pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos, false);
+		pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", false);
 		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+		System.out.println("New Board");
 		pos.g.showBoard();
 		pos.g.setBoard(2, "C", "O");
-		pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos, false);
-		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
 		pos.g.showBoard();
+		pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O",false);
+		pos.g.showBoard();
+		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
 
 		
 		try{

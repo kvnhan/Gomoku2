@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class Board {
 	
-String[][] cells = new String[5][5];
+public String[][] cells = new String[5][5];
 
 
 public Board()
