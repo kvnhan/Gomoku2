@@ -7,10 +7,10 @@ import java.util.LinkedList;
 
 public class Board {
 	
-String[][] cells = new String[5][5];
+public String[][] cells = new String[5][5];
 
 
-public Board(String[][] cells)
+public Board()
 {
 	this.cells = cells;
 }
@@ -18,7 +18,7 @@ public Board(String[][] cells)
 public void initBoard()
 {
 	for(int i=0; i<cells.length; i++) {
-		System.out.println("");
+
         for(int j=0; j<cells[i].length; j++) {
         	cells[i][j] = "Empty";
         }
@@ -48,9 +48,9 @@ public Integer eval()
 	Integer diagdowncount = 0;
 	LinkedList<Path> pathlist = new LinkedList<Path>();
 	for(int i=0; i<cells.length; i++) {
-		System.out.println("");
+
         for(int j=0; j<cells[i].length; j++) {
-        		if("White" == cells[i][j]){
+        		if("O" == cells[i][j]){
         			LinkedList<Cell> hl = new LinkedList<Cell>();
         			LinkedList<Cell> vl = new LinkedList<Cell>();
         			LinkedList<Cell> dul = new LinkedList<Cell>();
@@ -60,28 +60,24 @@ public Integer eval()
         			vl.add(c);
         			dul.add(c);
         			ddl.add(c);
-        			Path vp = new Path(0, vl, "vert", "White");
-        			Path hp = new Path(0, hl, "horiz", "White");
-        			Path dup = new Path(0, dul, "diagup", "White");
-        			Path ddp = new Path(0, ddl, "diagdown", "White");
+        			Path vp = new Path(0, vl, "vert", "O");
+        			Path hp = new Path(0, hl, "horiz", "O");
+        			Path dup = new Path(0, dul, "diagup", "O");
+        			Path ddp = new Path(0, ddl, "diagdown", "O");
 
-        			horizcount = searchAroundHoriz(i, j, hp, "White");
-        			vertcount = searchAroundVert(i, j, vp, "White");
-        			diagupcount = searchAroundDiagUp(i, j, dup, "White");
-        			diagdowncount = searchAroundDiagDown(i, j, ddp, "White");
+        			horizcount = searchAroundHoriz(i, j, hp, "O");
+        			vertcount = searchAroundVert(i, j, vp, "O");
+        			diagupcount = searchAroundDiagUp(i, j, dup, "O");
+        			diagdowncount = searchAroundDiagDown(i, j, ddp, "O");
         			
         			pathlist.add(vp);
         			pathlist.add(hp);
         			pathlist.add(dup);
         			pathlist.add(ddp);
-        			
-        			System.out.println("SCORE! = " + horizcount);
-        			System.out.println("VERTSCORE! = " + vertcount);
-        			System.out.println("UPSCORE! = " + diagupcount);
-        			System.out.println("DOWNSCORE! = " + diagdowncount);
+        		
         				
         		}
-        		else if("Black" == cells[i][j]){
+        		else if("X" == cells[i][j]){
         			LinkedList<Cell> hl = new LinkedList<Cell>();
         			LinkedList<Cell> vl = new LinkedList<Cell>();
         			LinkedList<Cell> dul = new LinkedList<Cell>();
@@ -91,26 +87,21 @@ public Integer eval()
         			vl.add(c);
         			dul.add(c);
         			ddl.add(c);
-        			Path vp = new Path(0, vl, "vert", "Black");
-        			Path hp = new Path(0, hl, "horiz", "Black");
-        			Path dup = new Path(0, dul, "diagup", "Black");
-        			Path ddp = new Path(0, ddl, "diagdown", "Black");
+        			Path vp = new Path(0, vl, "vert", "X");
+        			Path hp = new Path(0, hl, "horiz", "X");
+        			Path dup = new Path(0, dul, "diagup", "X");
+        			Path ddp = new Path(0, ddl, "diagdown", "X");
 
-        			horizcount = searchAroundHoriz(i, j, hp, "Black");
-        			vertcount = searchAroundVert(i, j, vp, "Black");
-        			diagupcount = searchAroundDiagUp(i, j, dup, "Black");
-        			diagdowncount = searchAroundDiagDown(i, j, ddp, "Black");
+        			horizcount = searchAroundHoriz(i, j, hp, "X");
+        			vertcount = searchAroundVert(i, j, vp, "X");
+        			diagupcount = searchAroundDiagUp(i, j, dup, "X");
+        			diagdowncount = searchAroundDiagDown(i, j, ddp, "X");
         			
         			pathlist.add(vp);
         			pathlist.add(hp);
         			pathlist.add(dup);
         			pathlist.add(ddp);
-        			
-        			System.out.println("SCORE! = " + horizcount);
-        			System.out.println("VERTSCORE! = " + vertcount);
-        			System.out.println("UPSCORE! = " + diagupcount);
-        			System.out.println("DOWNSCORE! = " + diagdowncount);
-        				
+        	
         		}
         		
         }
@@ -142,7 +133,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         	Path currpath = pathlist.get(j);
         	
         	if (currpath.path.size() == 1){
-            	if(currpath.player == "White"){
+            	if(currpath.player == "O"){
             		score += 10;
             	}
             	else{
@@ -151,7 +142,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         		continue;
         	}
         	if (currpath.path.size() == 2){
-            	if(currpath.player == "White"){
+            	if(currpath.player == "O"){
             		score += 50;
             	}
             	else{
@@ -213,21 +204,20 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         			tempscore += 50;
         		}
         	}
-        	if(currpath.player == "White"){
+        	if(currpath.player == "O"){
         		score += tempscore;
         	}
         	else{
         		score -= tempscore;
         	}
         }
-        System.out.println("FINALSCORE: " + score );
+
 	return score;
 }
 
 private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	
-	System.out.println("CURRENT NODE: " + (i) + "," + (j));
 	if (j > 0 && j < 4){
 		
 		if (cells[i][j-1]  == player){
@@ -239,7 +229,6 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i) + "," + (j-1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundHoriz(i, j-1, p, player);
@@ -254,7 +243,6 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i) + "," + (j+1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundHoriz(i, j+1, p, player);
@@ -267,7 +255,7 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 
 private Integer searchAroundVert(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	System.out.println("CURRENT NODE: " + (i) + "," + (j));
+	
 	if (i < 4 && i > 0  && j < 4 && j > 0){
 		if (cells[i-1][j]  == player){
 			Cell c = new Cell(i-1,j);
@@ -277,7 +265,6 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i-1) + "," + (j));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundVert(i-1, j, p, player);
@@ -291,7 +278,6 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i+1) + "," + (j));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundVert(i+1, j, p, player);
@@ -305,7 +291,6 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	System.out.println("CURRENT NODE: " + (i) + "," + (j));
 	if (i < 4 && i > 0  && j < 4 && j > 0){
 		if (cells[i+1][j+1] == player){
 			Cell c = new Cell(i+1,j+1);
@@ -315,7 +300,6 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-			System.out.println("ADDED NODE: " + (i+1) + "," + (j+1));
 			p.score = p.score + 1;
 			p.path.addFirst(c);
 			searchAroundDiagDown(i+1, j+1, p, player);
@@ -330,7 +314,6 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i-1) + "," + (j-1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagDown(i-1, j-1, p, player);
@@ -345,7 +328,6 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	System.out.println("CURRENT NODE: " + (i) + "," + (j));
 	if (i < 4 && i > 0  && j < 4 && j > 0){
 		if (cells[i-1][j+1] == player){
 			Cell c = new Cell(i-1,j+1);
@@ -355,7 +337,6 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i-1) + "," + (j+1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagUp(i-1, j+1, p, player);
@@ -369,7 +350,6 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				System.out.println("ADDED NODE: " + (i+1) + "," + (j-1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagUp(i+1, j-1, p, player);
@@ -389,7 +369,7 @@ private LinkedList<Board>generateChildren(String player){
         	if(currcells[i][j] == null){
         		currcells[i][j] = player;
         		String[][] newcells = currcells;
-        		Board cb = new Board(newcells);
+        		Board cb = new Board();
         		children.add(cb);
         		currcells[i][j] = null;
         	}
@@ -406,11 +386,11 @@ public Integer minimax(Board b, Integer depth, String player, Integer alpha, Int
         return b.eval();
 	}
     
-    if (player == "White"){
+    if (player == "O"){
         best = -200000000; // "negative infinity"
-        LinkedList<Board> childBoards = b.generateChildren("White");
+        LinkedList<Board> childBoards = b.generateChildren("O");
         for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, "Black", alpha, beta);
+            Integer value = minimax(cb, depth+1, "X", alpha, beta);
             best = Math.max(best, value);
             alpha = Math.max(alpha, best);
             if (beta <= alpha){
@@ -421,9 +401,9 @@ public Integer minimax(Board b, Integer depth, String player, Integer alpha, Int
     }
     else{
         best= 2000000; // "positive infinity"
-        LinkedList<Board> childBoards = b.generateChildren("Black");
+        LinkedList<Board> childBoards = b.generateChildren("X");
         for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, "White", alpha, beta);
+            Integer value = minimax(cb, depth+1, "O", alpha, beta);
             best = Math.min( best, value);
             beta = Math.min( beta, value);
             if (beta <= alpha){

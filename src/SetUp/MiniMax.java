@@ -67,10 +67,11 @@ public class MiniMax {
 		if(depth == 0){
 			int finalScore; 
 			if(myTurn){
-				finalScore = b.eval(me);
+				finalScore = board.board.eval();
 				player = me;
 			}else{
-				finalScore = b.eval(opponent);
+				finalScore = board.board.eval();
+
 				player = opponent;
 			}
 			board = reset();
@@ -79,7 +80,7 @@ public class MiniMax {
 			return position;
 			
 		}
-		Position bestMove = new Position(1,1,0, me, board);
+		Position bestMove = new Position(0,0,0, me, board);
 		//Min and Max with alpha-beta pruning
 		while(moveList.size() > 0){
 			Position newMove = moveList.getFirst();
