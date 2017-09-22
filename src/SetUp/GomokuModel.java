@@ -6,12 +6,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+import Eval.Board;
+import Eval.Cell;
+
 public class GomokuModel {
-	
-	String[][] b = new String[15][15];
+	public int n = 5;
+	public String[][] b = new String[n][n];
+	Board board = new Board();
 	HashMap<String, Integer> columns = new HashMap<String, Integer>();
 	
-	public GomokuModel(){}
+	public GomokuModel(){
+		
+	}
 	
 	public void setUpCol(){
 		columns.put("A", 1);
@@ -44,19 +50,31 @@ public class GomokuModel {
 		
 		
 	}
+	public String parseCol(int col){
+		String c = null;
+		setUpCol();
+		for(String s: columns.keySet()){
+			if(columns.get(s) == col){
+				c = s;
+				return c;
+			}
+		}
+		return c;
+	}
+	public void makeMove(int h, int v, String value){
+		board.cells[h][v] = value;
+	}
+	
 	// Set the board
 	public void setBoard(int Row, String Column, String stone){
-
 		setUpCol();
 		int newR = Row - 1;
 		int newC = columns.get(Column) - 1;
-		//TODO: if stone is black, the it is X, else O
-		String player = "X";
-		for(int i = 0; i < 15; i++){
+		for(int i = 0; i < n; i++){
 			if(i == newR){
-				for(int j = 0; j < 15; j++){
+				for(int j = 0; j < n; j++){
 					if(j == newC){
-						b[i][j] = player;
+						board.cells[i][j] = stone;
 					}
 				}
 			}
@@ -65,26 +83,98 @@ public class GomokuModel {
 	}
 	
 	public void showBoard(){
-		String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
+		String rows = "+---+---+---+---+---+";
+		//String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
 		System.out.println(rows);
-		for(int i = 0; i < 15; i++){
-			for(int j = 0; j < 15; j++){
-				b[i][j] = " ";
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				if(board.cells[i][j] == null){
+					board.cells[i][j] = " ";
+				}
 				if(j == 0){
-					System.out.print("| " + b[i][j]);
-				}else if(j == 14){
-					System.out.print(" | " + b[i][j] + " |");
+					System.out.print("| " + board.cells[i][j]);
+				}else if(j == n - 1){
+					System.out.print(" | " + board.cells[i][j] + " |");
 					System.out.println();
 					System.out.println(rows);
 				}else{
 					
-					System.out.print(" | " + b[i][j]);
+					System.out.print(" | " + board.cells[i][j]);
 				}
 				
 				
 			}
 		}
 		
+	}
+	
+	public HashMap<Position, String> getEmptySpaces(){
+		HashMap<Position, String> empty = new HashMap<Position, String>();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (board.cells[i][j].equals(" ")) {
+					Position p = new Position(i,j, 0, " ", this);
+					empty.put(p, "empty");
+				}
+			}
+		}
+		
+		return empty;
+	}
+	
+	public HashMap<Position, String> getPlayerPiece(String stone){
+		HashMap<Position, String> p = new HashMap<Position, String>();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (board.cells[i][j].equals(stone)) {
+					Position pos = new Position(i,j, 0, stone, this);
+					p.put(pos, stone);
+				}
+			}
+		}
+		return p;
+	}
+
+	
+	public HashMap<Position, String> lookAround(Position p){
+		HashMap<Position, String> empty = new HashMap<Position, String>();
+		if(p.row - 1 >= 0){
+			if(board.cells[p.row - 1][p.column].equals(" ")){
+				Position pos = new Position(p.row - 1,p.column, 0, p.stone, this);
+				empty.put(pos, "empty");
+			}
+			if (p.column - 1 >= 0) {
+				if (board.cells[p.row - 1][p.column - 1].equals(" ")) {
+					Position pos = new Position(p.row - 1,p.column - 1, 0, p.stone, this);
+					empty.put(pos, "empty");
+				}
+			}
+		}
+		if (p.column + 1 < n) {
+			if (board.cells[p.row][p.column + 1].equals(" ")) {
+				Position pos = new Position(p.row,p.column + 1, 0, p.stone, this);
+				empty.put(pos, "empty");
+			}
+			if (p.row - 1 >= 0) {
+				if (board.cells[p.row - 1][p.column + 1].equals(" ")) {
+					Position pos = new Position(p.row - 1,p.column + 1, 0, p.stone, this);
+					empty.put(pos, "empty");
+				}
+			}
+		}
+		if (p.row + 1 < n) {
+			if (board.cells[p.row + 1][p.column].equals(" ")) {
+				Position pos = new Position(p.row + 1,p.column, 0, p.stone, this);
+				empty.put(pos, "empty");
+			}
+			if (p.column + 1 < n) {
+				if (board.cells[p.row + 1][p.column + 1].equals(" ")) {
+					Position pos = new Position(p.row + 1,p.column + 1, 0, p.stone, this);
+					empty.put(pos, "empty");
+				}
+			}
+		}
+		return empty;
 	}
 	
 

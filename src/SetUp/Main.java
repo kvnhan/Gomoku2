@@ -9,13 +9,31 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-	
+	static String mystone = null;
+	static String otherstone = null;
+
+
 	public static void main(String[] args) {
 		
 		FileReader fr = null;
 		BufferedReader br = null;
 		GomokuModel gm = new GomokuModel();
+		MiniMax mmx = new MiniMax();
+		Position pos = new Position(0, 0, 0, " ", gm);
+		gm.setBoard(2, "B", "X");
+		gm.setBoard(2, "A", "O");
 		gm.showBoard();
+		pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", false);
+		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+		System.out.println("New Board");
+		pos.g.showBoard();
+		pos.g.setBoard(2, "C", "O");
+		pos.g.showBoard();
+		pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O",false);
+		pos.g.showBoard();
+		pos.g.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+
+		
 		try{
 			
 		URL url = SetUp.Main.class.getProtectionDomain().getCodeSource().getLocation();
@@ -27,7 +45,7 @@ public class Main {
         String fileSeparator = System.getProperty("file.separator");
         String textFile = parentPath + fileSeparator + "end_game.txt";
         File endFile = new File(textFile);
-        /*
+        
         while(true){
 	        //Check if end_game.txt exists
 	        if(!endFile.exists()){
@@ -35,7 +53,7 @@ public class Main {
 	            LinkedList<String> goFiles = new LinkedList<String>();
 	            File dir = new File(parentPath);
 	            for (File file : dir.listFiles()) {
-	              if (file.getName() == "groupname.go.txt") {
+	              if (file.getName() == "b.go.txt") {
 	                goFiles.add(file.getName());
 	              }
 	            }
@@ -49,10 +67,22 @@ public class Main {
 	     			} catch (Exception e) {
 	     				System.out.println("Sorry, no such file");
 	     			}
-	     	        
-	     	        while ((sCurrentLine = br.readLine()) != null) {
-	     	        	String[] token = sCurrentLine.split("\\s+");	
+	     	        if((sCurrentLine = br.readLine()) == null){
+	     	        	if(mystone == null){
+	     	        		mystone = "X";
+	     	        	}
 	     	        }
+	     	        while ((sCurrentLine = br.readLine()) != null) {
+	     	        	String[] token = sCurrentLine.split("\\s+");
+	     	        	if(mystone.equals("X")){
+	     	        		otherstone = "O";
+	     	        	}else{
+	     	        		otherstone = "X";
+	     	        	}
+	     	        	gm.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
+	     	        }
+	     	        
+	     	        
 	            }else{
 	            	Thread.sleep(TimeUnit.SECONDS.toMillis(10));
 	            }
@@ -60,7 +90,7 @@ public class Main {
 	        	break;
 	        }
         }    
-   */
+   
 		}catch(Exception e){
 			
 		}

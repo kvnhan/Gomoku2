@@ -221,6 +221,8 @@ public class TicTacToe {
 	/*
 	 * Game playing
 	 */
+	
+	//Win move: 3,3 3,1 1,3 2,2 WIN
 	public void humanMove(Node currentNode) {
 		Node newNode = new Node();
 		int[] humanInput = this.getCorrectInputFromHumanMove(currentNode);
