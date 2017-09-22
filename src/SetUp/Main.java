@@ -9,13 +9,29 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-	
+	static String mystone = null;
+	static String otherstone = null;
+
+
 	public static void main(String[] args) {
 		
 		FileReader fr = null;
 		BufferedReader br = null;
+		Position pos = new Position(0, 0, 0);
 		GomokuModel gm = new GomokuModel();
+		MiniMax mmx = new MiniMax();
+		gm.setBoard(2, "B", "X");
+		gm.setBoard(2, "A", "O");
 		gm.showBoard();
+		pos = mmx.minimax(gm, 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos);
+		gm.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+		gm.setBoard(1, "C", "O");
+		gm.showBoard();
+		pos = mmx.minimax(gm, 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", pos);
+		gm.setBoard(pos.row + 1, gm.parseCol(pos.column + 1), "X");
+		gm.showBoard();
+
+
 		try{
 			
 		URL url = SetUp.Main.class.getProtectionDomain().getCodeSource().getLocation();
@@ -35,7 +51,7 @@ public class Main {
 	            LinkedList<String> goFiles = new LinkedList<String>();
 	            File dir = new File(parentPath);
 	            for (File file : dir.listFiles()) {
-	              if (file.getName() == "groupname.go.txt") {
+	              if (file.getName() == "b.go.txt") {
 	                goFiles.add(file.getName());
 	              }
 	            }
@@ -49,10 +65,22 @@ public class Main {
 	     			} catch (Exception e) {
 	     				System.out.println("Sorry, no such file");
 	     			}
-	     	        
-	     	        while ((sCurrentLine = br.readLine()) != null) {
-	     	        	String[] token = sCurrentLine.split("\\s+");	
+	     	        if((sCurrentLine = br.readLine()) == null){
+	     	        	if(mystone == null){
+	     	        		mystone = "X";
+	     	        	}
 	     	        }
+	     	        while ((sCurrentLine = br.readLine()) != null) {
+	     	        	String[] token = sCurrentLine.split("\\s+");
+	     	        	if(mystone.equals("X")){
+	     	        		otherstone = "O";
+	     	        	}else{
+	     	        		otherstone = "X";
+	     	        	}
+	     	        	gm.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
+	     	        }
+	     	        
+	     	        
 	            }else{
 	            	Thread.sleep(TimeUnit.SECONDS.toMillis(10));
 	            }
