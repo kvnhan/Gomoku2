@@ -20,18 +20,7 @@ public class Main {
 		GomokuModel gm = new GomokuModel();
 		MiniMax mmx = new MiniMax();
 		Position pos = new Position(0, 0, 0, " ", gm);
-		gm.setBoard(1, "A", "X");
-		gm.setBoard(1, "C", "O");
-		gm.setBoard(1, "B", "X");
-		gm.setBoard(3, "A", "O");
-		gm.showBoard();
-		pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", "O", false);
-		pos.g.setBoard(pos.move.row + 1, gm.parseCol(pos.move.column + 1), "X");
-		pos.g.showBoard();
-
-		
-
-		
+	
 		try{
 			
 		URL url = SetUp.Main.class.getProtectionDomain().getCodeSource().getLocation();
@@ -51,7 +40,7 @@ public class Main {
 	            LinkedList<String> goFiles = new LinkedList<String>();
 	            File dir = new File(parentPath);
 	            for (File file : dir.listFiles()) {
-	              if (file.getName() == "b.go.txt") {
+	              if (file.getName() == "bomb.go.txt") {
 	                goFiles.add(file.getName());
 	              }
 	            }
@@ -66,9 +55,9 @@ public class Main {
 	     				System.out.println("Sorry, no such file");
 	     			}
 	     	        if((sCurrentLine = br.readLine()) == null){
-	     	        	if(mystone == null){
-	     	        		mystone = "X";
-	     	        	}
+	     	        	mystone = "X";	     	
+	     	        }else{
+	     	        	mystone = "O";
 	     	        }
 	     	        while ((sCurrentLine = br.readLine()) != null) {
 	     	        	String[] token = sCurrentLine.split("\\s+");
@@ -77,12 +66,15 @@ public class Main {
 	     	        	}else{
 	     	        		otherstone = "X";
 	     	        	}
-	     	        	gm.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
+	     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
+	     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, otherstone, false);
+	     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);
+	     	        	pos.g.showBoard();
+	     	        	String move = "bomb " + pos.g.parseCol(pos.column + 1) + " " + pos.row ;
+	     	        	pos.g.writeFile(textFile, move);
 	     	        }
 	     	        
 	     	        
-	            }else{
-	            	Thread.sleep(TimeUnit.SECONDS.toMillis(10));
 	            }
 	        }else{
 	        	break;

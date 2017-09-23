@@ -157,7 +157,7 @@ class Game(object):
                         return True
 
                     if ((len(diagb_set) == 1)):
-                        eturn True
+                        return True
         return False
 
     def isBoardFull(self):

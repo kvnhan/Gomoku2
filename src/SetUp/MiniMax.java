@@ -38,6 +38,7 @@ public class MiniMax {
 		g.board.cells[p.row][p.column] = " ";
 		return g;
 	}
+	
 	public Position minimax(GomokuModel board, int depth, double alpha, double beta, String me, String opponent, boolean save){
 		Position tempPos;
 		Board b = new Board();
@@ -81,14 +82,8 @@ public class MiniMax {
 		String player;
 		if(depth == 0){
 			int finalScore; 
-			if(myTurn){
-				finalScore = board.board.eval();
-				player = me;
-			}else{
-				finalScore = board.board.eval();
-				myTurn = false;
-				player = opponent;
-			}
+			finalScore = board.board.eval();
+			player = me;
 			board = reset();
 			if(moveList.size() == 0){
 				player = "GameOver";
@@ -102,14 +97,16 @@ public class MiniMax {
 			
 		}
 		Position bestMove = null;
+		int tempScore;
 
-		//Min and Max with alpha-beta pruning
+		// If AI is the max
 			if(me.equals("X") && myTurn){
 				while(moveList.size() > 0){
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, me);
-					myTurn = false;
 					board.showBoard();
+					tempScore = -board.board.eval();
+					myTurn = false;
 					tempPos = minimax(board, depth - 1, alpha, beta, me, opponent, true);
 					board = undo(board, newMove);
 					board.showBoard();
@@ -124,9 +121,7 @@ public class MiniMax {
 						bestMove.move = newMove;
 					}
 					if(beta <= alpha){
-						bestMove.score = beta;
-						bestMove.move = null;
-						return bestMove;
+						break;
 					}
 					
 					moveList.removeFirst();
@@ -134,12 +129,14 @@ public class MiniMax {
 				}
 				board = reset();
 				return bestMove;
+			// If AI is the min
 			}else{
 				while(moveList.size() > 0){
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, opponent);
-					myTurn = true;
 					board.showBoard();
+					myTurn = true;
+					tempScore = board.board.eval();
 					tempPos = minimax(board, depth - 1, alpha, beta, me, opponent, true);
 					board = undo(board, newMove);
 					board.showBoard();
