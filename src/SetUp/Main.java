@@ -2,6 +2,7 @@ package SetUp;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ public class Main {
 
 	static String mystone = null;
 	static String otherstone = null;
-
+	static boolean went = false;
 
 	public static void main(String[] args) {
 		
@@ -30,7 +31,7 @@ public class Main {
         
         String sCurrentLine;
         String fileSeparator = System.getProperty("file.separator");
-        String textFile = parentPath + fileSeparator + "end_game.txt";
+        String textFile = parentPath + fileSeparator + "end_game";
         File endFile = new File(textFile);
         
         while(true){
@@ -40,42 +41,77 @@ public class Main {
 	            LinkedList<String> goFiles = new LinkedList<String>();
 	            File dir = new File(parentPath);
 	            for (File file : dir.listFiles()) {
-	              if (file.getName() == "bomb.go.txt") {
+	              if (file.getName().equals("bomb.go")) {
 	                goFiles.add(file.getName());
 	              }
 	            }
-	            //Read move_file.txt
+	            
 	            if(!goFiles.isEmpty()){
-	            	textFile = parentPath + fileSeparator + "move_file.txt";
-	            	try {
-	     				fr = new FileReader(textFile);
-	     				br = new BufferedReader(fr);
-	     	
-	     			} catch (Exception e) {
-	     				System.out.println("Sorry, no such file");
-	     			}
-	     	        if((sCurrentLine = br.readLine()) == null){
-	     	        	mystone = "X";	     	
-	     	        }else{
-	     	        	mystone = "O";
-	     	        }
-	     	        while ((sCurrentLine = br.readLine()) != null) {
-	     	        	String[] token = sCurrentLine.split("\\s+");
-	     	        	if(mystone.equals("X")){
-	     	        		otherstone = "O";
-	     	        	}else{
-	     	        		otherstone = "X";
-	     	        	}
-	     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
-	     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, otherstone, false);
-	     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);
-	     	        	pos.g.showBoard();
-	     	        	String move = "bomb " + pos.g.parseCol(pos.column + 1) + " " + pos.row ;
-	     	        	pos.g.writeFile(textFile, move);
-	     	        }
-	     	        
-	     	        
+	            	//Read move_file.txt
+		            if(went == false){
+		            	textFile = parentPath + fileSeparator + "move_file";
+		            	try {
+		     				fr = new FileReader(textFile);
+		     				br = new BufferedReader(fr);
+		     				sCurrentLine = br.readLine();
+			     	       	if(sCurrentLine != null) {
+			     	    	   if(sCurrentLine.equals("")){
+			     	    		   	mystone = "X";
+				    	        	String move = "bomb H 7";
+				    	        	pos.g.writeFile(textFile, move);
+				    	        	pos.g.setBoard(7,"H", mystone);
+				    	        	pos.g.showBoard();
+				    	        	went = true;
+				    	        	continue;
+			     	    	   }
+			     	    	   	if(mystone == null){
+			     	    	   		mystone = "O";
+			     	    	   	}
+			     	        	String[] token = sCurrentLine.split("\\s+");
+			     	        	if(mystone.equals("X")){
+			     	        		otherstone = "O";
+			     	        	}else{
+			     	        		otherstone = "X";
+			     	        	}
+			     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
+			     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, false);
+			     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);
+			     	        	pos.g.showBoard();
+			     	        	String move = "bomb " + pos.g.parseCol(pos.column + 1) + " " + (pos.row);
+			     	        	pos.g.writeFile(textFile, move);
+			     	        	went = true;
+			     	        	continue;
+			     	        }else{
+				     	        mystone = "X";
+			    	        	String move = "bomb H 7";
+			    	        	pos.g.writeFile(textFile, move);
+			    	        	pos.g.setBoard(7,"H", mystone);
+			    	        	pos.g.showBoard();
+			    	        	went = true;
+			    	        	continue;
+			     	        }
+		     			} catch (Exception e) {
+		     				if(fr == null){
+		     					System.out.println("Sorry, no such file");
+		     				}else{
+		     					e.printStackTrace();
+		     					System.out.println("Fuck");
+		     				}
+		     			} finally {
+		     			    if (fr != null) {
+		     			        try {
+		     			            fr.close();
+		     			        } catch (IOException e) {
+		     			            e.printStackTrace();
+		     			        }
+		     			    }
+		     			}
+		            	
+		            }	            	     	     
+	            }else{
+	            	went = false;
 	            }
+	            
 	        }else{
 	        	break;
 	        }

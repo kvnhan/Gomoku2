@@ -2,6 +2,7 @@ package SetUp;
 
 import java.io.PrintWriter;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import Eval.Board;
 import Eval.Cell;
 
 public class GomokuModel {
-	public int n = 3;
+	public int n = 15;
 	public String[][] b = new String[n][n];
 	Board board = new Board();
 	HashMap<String, Integer> columns = new HashMap<String, Integer>();
@@ -18,7 +19,7 @@ public class GomokuModel {
 	public GomokuModel(){
 		
 	}
-	
+
 	public void setUpCol(){
 		columns.put("A", 1);
 		columns.put("B", 2);
@@ -39,13 +40,13 @@ public class GomokuModel {
 	
 	//Write to move_file 
 	public void writeFile(String path, String move){
+		FileWriter out = null;
 		try { 
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
-		    out.write(move);
-		    out.flush();
+		    out = new FileWriter(new File(path), false);
+		    out.write(move + "\n");
 		    out.close();
-		  }
-		  catch (IOException e) {  
+		  }catch (IOException e) {  
+			 
 		  }
 		
 		
@@ -69,7 +70,7 @@ public class GomokuModel {
 	public void setBoard(int Row, String Column, String stone){
 		setUpCol();
 		int newR = Row - 1;
-		int newC = columns.get(Column) - 1;
+		int newC = columns.get(Column.toUpperCase()) - 1;
 		for(int i = 0; i < n; i++){
 			if(i == newR){
 				for(int j = 0; j < n; j++){
@@ -83,8 +84,8 @@ public class GomokuModel {
 	}
 	
 	public void showBoard(){
-		String rows = "+---+---+---+---+---+";
-		//String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
+		//String rows = "+---+---+---+---+---+";
+		String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
 		System.out.println(rows);
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < n; j++){
@@ -126,6 +127,9 @@ public class GomokuModel {
 		HashMap<Position, String> p = new HashMap<Position, String>();
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
+				if(board.cells[i][j] == null){
+					board.cells[i][j] = " ";
+				}
 				if (board.cells[i][j].equals(stone)) {
 					Position pos = new Position(i,j, 0, stone, this);
 					p.put(pos, stone);

@@ -323,10 +323,6 @@ def play_gomoku(team1, team2):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        logging.error("Wrong number of arguments!  Call is %s [team1_name] [team2_name]")
-        exit(8)
-    else:
-        team1 = sys.argv[1]
-        team2 = sys.argv[2]
-    play_gomoku(team1, team2)
+    bom = "bom"
+    bomb = "bomb"
+    play_gomoku(bomb, bomb)

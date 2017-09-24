@@ -11,8 +11,10 @@ import Eval.Board;
 public class MiniMax {
 
 	boolean myTurn = true;
+	boolean first = true;
 	LinkedList<Position> originalBoard = new LinkedList<Position>();
 	
+	// Keep the  original board before changes being made
 	public void preserveBoard(GomokuModel g){
 		originalBoard = new LinkedList<Position>();
 		for(int i = 0; i < g.n; i++){
@@ -23,6 +25,7 @@ public class MiniMax {
 		}
 	}
 	
+	// Reset board back to original state
 	public GomokuModel reset(){
 		GomokuModel g = new GomokuModel();
 		for(Position pos: originalBoard){
@@ -34,35 +37,44 @@ public class MiniMax {
 		return g;
 	}
 	
+	// Undo the last move
 	public GomokuModel undo(GomokuModel g, Position p){
 		g.board.cells[p.row][p.column] = " ";
 		return g;
 	}
 	
-	public Position minimax(GomokuModel board, int depth, double alpha, double beta, String me, String opponent, boolean save){
+	public Position minimax(GomokuModel board, int depth, double alpha, double beta, String player, boolean save){
 		Position tempPos;
 		Board b = new Board();
 		if(save == false){
 			preserveBoard(board);
 		}
+		
 		double best;
 		double tempBest;
 		HashMap<Position, String> myStone;
-		if(myTurn){
-			myStone = board.getPlayerPiece(me);
-		}else{
-			myStone = board.getPlayerPiece(opponent);
-		}
-		// LinkedList<Position> aroundOpponent = new LinkedList<Position>();
+		// Get Player's stone locations
+		myStone = board.getPlayerPiece(player);
+		
 		LinkedList<Position> moveList = new LinkedList<Position>();
 		
 		//Get a list of possible empty spaces to make a move
 		if(myStone.size() == 0){
-			for(Position position: board.getEmptySpaces().keySet()){
-				moveList.add(position);
+			String tempS;
+			if(player.equals("X")){
+				tempS = "O";
+			}else{
+				tempS = "X";
+			}
+			for(Position position: board.getPlayerPiece(tempS).keySet()){
+				for(Position coord: board.lookAround(position).keySet()){
+					moveList.add(coord);
+				}
 			}
 		}
 		Position temp = null;
+		
+		//Get empty locations around each of player's stone locations
 		for(Position p: myStone.keySet()){
 			for(Position coord: board.lookAround(p).keySet()){
 				if(temp == null){
@@ -79,14 +91,15 @@ public class MiniMax {
 				}
 			}
 		}
-		String player;
+		String p;
+		//Evaluate the score of the board
 		if(depth == 0){
 			int finalScore; 
 			finalScore = board.board.eval();
-			player = me;
+			p = player;
 			board = reset();
 			if(moveList.size() == 0){
-				player = "GameOver";
+				p = "GameOver";
 				Position position = new Position(0,0, finalScore, player, board);
 				return position;
 			}
@@ -100,16 +113,15 @@ public class MiniMax {
 		int tempScore;
 
 		// If AI is the max
-			if(me.equals("X") && myTurn){
+			if(player.equals("X") && myTurn){
+				first = true;
 				while(moveList.size() > 0){
 					Position newMove = moveList.getFirst();
-					board.makeMove(newMove.row, newMove.column, me);
-					board.showBoard();
+					board.makeMove(newMove.row, newMove.column, player);
 					tempScore = -board.board.eval();
 					myTurn = false;
-					tempPos = minimax(board, depth - 1, alpha, beta, me, opponent, true);
+					tempPos = minimax(board, depth - 1, alpha, beta, "O", true);
 					board = undo(board, newMove);
-					board.showBoard();
 					if(bestMove == null || bestMove.score < tempPos.score){
 						bestMove = tempPos;
 						bestMove.move = newMove;
@@ -131,15 +143,14 @@ public class MiniMax {
 				return bestMove;
 			// If AI is the min
 			}else{
+				first = false;
 				while(moveList.size() > 0){
 					Position newMove = moveList.getFirst();
-					board.makeMove(newMove.row, newMove.column, opponent);
-					board.showBoard();
+					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = true;
 					tempScore = board.board.eval();
-					tempPos = minimax(board, depth - 1, alpha, beta, me, opponent, true);
+					tempPos = minimax(board, depth - 1, alpha, beta, "X", true);
 					board = undo(board, newMove);
-					board.showBoard();
 					if(bestMove == null || bestMove.score > tempPos.score){
 						bestMove = tempPos;
 						bestMove.move = newMove;
