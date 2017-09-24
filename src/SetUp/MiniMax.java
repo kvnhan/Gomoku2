@@ -59,19 +59,19 @@ public class MiniMax {
 		LinkedList<Position> moveList = new LinkedList<Position>();
 		
 		//Get a list of possible empty spaces to make a move
-		if(myStone.size() == 0){
-			String tempS;
-			if(player.equals("X")){
-				tempS = "O";
-			}else{
-				tempS = "X";
-			}
-			for(Position position: board.getPlayerPiece(tempS).keySet()){
-				for(Position coord: board.lookAround(position).keySet()){
-					moveList.add(coord);
-				}
+		
+		String tempS;
+		if(player.equals("X")){
+			tempS = "O";
+		}else{
+			tempS = "X";
+		}
+		for(Position position: board.getPlayerPiece(tempS).keySet()){
+			for(Position coord: board.lookAround(position).keySet()){
+				moveList.add(coord);
 			}
 		}
+		
 		Position temp = null;
 		
 		//Get empty locations around each of player's stone locations
@@ -113,22 +113,22 @@ public class MiniMax {
 		int tempScore;
 
 		// If AI is the max
-			if(player.equals("X") && myTurn){
+			if(player.equals("O") && myTurn){
 				first = true;
 				while(moveList.size() > 0){
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					tempScore = -board.board.eval();
 					myTurn = false;
-					tempPos = minimax(board, depth - 1, alpha, beta, "O", true);
+					tempPos = minimax(board, depth - 1, alpha, beta, "X", true);
 					board = undo(board, newMove);
-					if(bestMove == null || bestMove.score < tempPos.score){
+					if(bestMove == null || -bestMove.score < -tempPos.score){
 						bestMove = tempPos;
 						bestMove.move = newMove;
 						
 					}
-					if(tempPos.score > alpha){
-						alpha = tempPos.score;
+					if(-tempPos.score > alpha){
+						alpha = -tempPos.score;
 						bestMove = tempPos;
 						bestMove.move = newMove;
 					}
@@ -148,23 +148,21 @@ public class MiniMax {
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = true;
-					tempScore = board.board.eval();
-					tempPos = minimax(board, depth - 1, alpha, beta, "X", true);
+					tempScore = -board.board.eval();
+					tempPos = minimax(board, depth - 1, alpha, beta, "O", true);
 					board = undo(board, newMove);
-					if(bestMove == null || bestMove.score > tempPos.score){
+					if(bestMove == null || bestMove.score > -tempPos.score){
 						bestMove = tempPos;
 						bestMove.move = newMove;
 						
 					}
-					if(tempPos.score < beta){
-						beta = tempPos.score;
+					if(-tempPos.score < beta){
+						beta = -tempPos.score;
 						bestMove = tempPos;
 						bestMove.move = newMove;
 					}
 					if(beta <= alpha){
-						bestMove.score = alpha;
-						bestMove.move = null;
-						return bestMove;
+						break;
 					}
 					
 					moveList.removeFirst();
