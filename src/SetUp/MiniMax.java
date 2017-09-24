@@ -58,8 +58,8 @@ public class MiniMax {
 		
 		LinkedList<Position> moveList = new LinkedList<Position>();
 		
-		//Get a list of possible empty spaces to make a move
-		
+		//Get empty locations around each player's stone locations
+		Position temp = null;
 		String tempS;
 		if(player.equals("X")){
 			tempS = "O";
@@ -68,13 +68,21 @@ public class MiniMax {
 		}
 		for(Position position: board.getPlayerPiece(tempS).keySet()){
 			for(Position coord: board.lookAround(position).keySet()){
-				moveList.add(coord);
+				if(temp == null){
+					temp = coord;
+					moveList.add(coord);
+					continue;
+				}
+				if((temp.row == coord.row && temp.column != coord.column) ||
+				(temp.row != coord.row && temp.column != coord.column)||
+				(temp.row != coord.row && temp.column == coord.column)){
+					temp = coord;
+					moveList.add(coord);				
+				}
 			}
-		}
+		}	
 		
-		Position temp = null;
-		
-		//Get empty locations around each of player's stone locations
+		temp = null;	
 		for(Position p: myStone.keySet()){
 			for(Position coord: board.lookAround(p).keySet()){
 				if(temp == null){
