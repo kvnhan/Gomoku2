@@ -205,10 +205,10 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         		}
         	}
         	if(currpath.player.equals("O")){
-        		score += tempscore;
+        		score -= tempscore;
         	}
         	else{
-        		score -= tempscore;
+        		score += tempscore;
         	}
         }
 
