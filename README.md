@@ -6,33 +6,38 @@ Group Memebers:
 - Joseph Wilder
 
 Instructions to Compile Code:
+-
 - java -jar bomb.jar
 
 Utility Function:
+-
 - Into "Eval" package
 - Goes through the board and finds all surrounding spots
 
 Evaluation Function:
+-
 - Scoreboard tallys all the points in the utility function to give best move
 
 Heurisitcs Function:
+-
 - Depth-Limited Search
 
 Results:
+-
 - Tests Ran:
-	- 
+	- x
 - Program play against human?:
- 	-
+ 	-x
 - Program play against self?:
- 	- 
+ 	- x
 - Program play against other programs?:
-	-
+	-x
 - Program Performance:
-	-
+	-x
 - Strengths:
-	-
+	-x
 - Weaknesses:
-	-
+	-x
 	
 Discussion on why evaluation function and heuristics chosen are good choices:
 - 
