@@ -40,79 +40,105 @@ public void makeMove(Integer h, Integer v, String value){
 	cells[h][v] = value;
 }
 
+
+// Function to find all paths on the board for a given player
+// .. and evaluate the board to give it a score
 public Integer eval(String player)
 {
-
-	Integer horizcount = 0;
-	Integer vertcount = 0;
-	Integer diagupcount = 0;
-	Integer diagdowncount = 0;
+	// The list of all paths on the board
+	// Empty to start
 	LinkedList<Path> pathlist = new LinkedList<Path>();
+	
+	// Figure out who the opponent player is...
 	String opp;
 	if(player.equals("O")){
 		opp = "X";
 	}else{
 		opp = "O";
 	}
+	
+	// Iterate over all 225 cells on the board
 	for(int i=0; i<cells.length; i++) {
-
         for(int j=0; j<cells[i].length; j++) {
+        		// When we find one of our own cells, search around it
         		if(cells[i][j].equals(player)){
+        			
+        			// Need to consider streaks in all possible directions
         			LinkedList<Cell> hl = new LinkedList<Cell>();
         			LinkedList<Cell> vl = new LinkedList<Cell>();
         			LinkedList<Cell> dul = new LinkedList<Cell>();
         			LinkedList<Cell> ddl = new LinkedList<Cell>();
+        			
+        			// Create a cell object at this position
         			Cell c = new Cell(i, j);
+        			
+        			// This cell belongs to all possible paths
         			hl.add(c);
         			vl.add(c);
         			dul.add(c);
         			ddl.add(c);
+        			
+        			// Make a path object to represent these streaks
         			Path vp = new Path(0, vl, "vert", player);
         			Path hp = new Path(0, hl, "horiz", player);
         			Path dup = new Path(0, dul, "diagup", player);
         			Path ddp = new Path(0, ddl, "diagdown", player);
 
-        			horizcount = searchAroundHoriz(i, j, hp, player);
-        			vertcount = searchAroundVert(i, j, vp, player);
-        			diagupcount = searchAroundDiagUp(i, j, dup, player);
-        			diagdowncount = searchAroundDiagDown(i, j, ddp, player);
+        			// Now search around this cell in all possible directions
+        			// (Generates paths recursively)
+        			searchAroundHoriz(i, j, hp, player);
+        			searchAroundVert(i, j, vp, player);
+        			searchAroundDiagUp(i, j, dup, player);
+        			searchAroundDiagDown(i, j, ddp, player);
         			
+        			// Add all of these paths to the list of paths on this board
         			pathlist.add(vp);
         			pathlist.add(hp);
         			pathlist.add(dup);
         			pathlist.add(ddp);
-        		
-        				
         		}
+        		
+        		// Do the same for an opponents piece...
         		else if(cells[i][j].equals(opp)){
+        			
+        			// Need to consider streaks in all possible directions
         			LinkedList<Cell> hl = new LinkedList<Cell>();
         			LinkedList<Cell> vl = new LinkedList<Cell>();
         			LinkedList<Cell> dul = new LinkedList<Cell>();
         			LinkedList<Cell> ddl = new LinkedList<Cell>();
+        			
+        			// Create a cell object at this position
         			Cell c = new Cell(i, j);
+        			
+        			// This cell belongs to all possible paths
         			hl.add(c);
         			vl.add(c);
         			dul.add(c);
         			ddl.add(c);
+        			
+        			// Make a path object to represent these streaks
         			Path vp = new Path(0, vl, "vert", opp);
         			Path hp = new Path(0, hl, "horiz", opp);
         			Path dup = new Path(0, dul, "diagup", opp);
         			Path ddp = new Path(0, ddl, "diagdown", opp);
 
-        			horizcount = searchAroundHoriz(i, j, hp, opp);
-        			vertcount = searchAroundVert(i, j, vp, opp);
-        			diagupcount = searchAroundDiagUp(i, j, dup, opp);
-        			diagdowncount = searchAroundDiagDown(i, j, ddp, opp);
+        			// Now search around this cell in all possible directions
+        			// (Generates paths recursively)
+        			searchAroundHoriz(i, j, hp, opp);
+        			searchAroundVert(i, j, vp, opp);
+        			searchAroundDiagUp(i, j, dup, opp);
+        			searchAroundDiagDown(i, j, ddp, opp);
         			
+        			// Add all of these paths to the list of paths on this board
         			pathlist.add(vp);
         			pathlist.add(hp);
         			pathlist.add(dup);
         			pathlist.add(ddp);
-        	
         		}       		
         }          
     }
 	
+	// Get the total score for this board and return it
 	Integer finalscore = scoreBoard(pathlist, player);
 	return finalscore;
 }
@@ -233,10 +259,8 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
 
 private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	
-	//System.out.println("CURRENT NODE: " + (i) + "," + (j));
+
 	if (j > 0){
-		
 		if (cells[i][j-1]  == player){
 			Cell c = new Cell(i,j - 1);
 
@@ -246,8 +270,6 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				//System.out.println("ADDED NODE: " + (i) + "," + (j-1));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundHoriz(i, j-1, p, player);
 			}
@@ -262,8 +284,6 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				//System.out.println("ADDED NODE: " + (i) + "," + (j+1));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundHoriz(i, j+1, p, player);
 			}
@@ -275,7 +295,6 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 
 private Integer searchAroundVert(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	//System.out.println("CURRENT NODE: " + (i) + "," + (j));
 	if (i > 0){
 		if (cells[i-1][j]  == player){
 			Cell c = new Cell(i-1,j);
@@ -285,8 +304,6 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				//System.out.println("ADDED NODE: " + (i-1) + "," + (j));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundVert(i-1, j, p, player);
 			}
@@ -301,8 +318,6 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				//System.out.println("ADDED NODE: " + (i+1) + "," + (j));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundVert(i+1, j, p, player);
 			}
@@ -315,7 +330,6 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	//System.out.println("CURRENT NODE: " + (i) + "," + (j));
 	if (i < 14 && j < 14){
 		if (cells[i+1][j+1] == player){
 			Cell c = new Cell(i+1,j+1);
@@ -325,8 +339,6 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-			//System.out.println("ADDED NODE: " + (i+1) + "," + (j+1));
-			p.score = p.score + 1;
 			p.path.addFirst(c);
 			searchAroundDiagDown(i+1, j+1, p, player);
 			}
@@ -341,8 +353,6 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-				//System.out.println("ADDED NODE: " + (i-1) + "," + (j-1));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagDown(i-1, j-1, p, player);
 			}
@@ -356,7 +366,7 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	Boolean visited = false;
-//	System.out.println("CURRENT NODE: " + (i) + "," + (j));
+
 	if (j < 14 && i > 0){
 		if (cells[i-1][j+1] == player){
 			Cell c = new Cell(i-1,j+1);
@@ -366,8 +376,6 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-			//	System.out.println("ADDED NODE: " + (i-1) + "," + (j+1));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagUp(i-1, j+1, p, player);
 			}
@@ -382,8 +390,6 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
-			//	System.out.println("ADDED NODE: " + (i+1) + "," + (j-1));
-				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagUp(i+1, j-1, p, player);
 			}
@@ -394,22 +400,6 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	return p.score;
 
 	}
-private LinkedList<Board>generateChildren(String player){
-	LinkedList<Board> children = new LinkedList<Board>();
-	String[][] currcells = this.cells;
-	for(int i=0; i<currcells.length; i++) {
-        for(int j=0; j<currcells[i].length; j++) {
-        	if(currcells[i][j] == null){
-        		currcells[i][j] = player;
-        		String[][] newcells = currcells;
-        		Board cb = new Board();
-        		children.add(cb);
-        		currcells[i][j] = null;
-        	}
-        }
-    }
-	return children;
-}
 
 }
 
