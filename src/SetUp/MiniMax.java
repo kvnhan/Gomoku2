@@ -126,10 +126,6 @@ public class MiniMax {
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = false;
-					board.showBoard();
-					System.out.println("Row: " + newMove.row);
-					System.out.println("Column: " + newMove.column);
-					System.out.println("Score: " + board.board.eval(player));
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
 					board = undo(board, newMove);
 					if(bestMove == null || bestMove.score < tempPos.score){
@@ -157,10 +153,6 @@ public class MiniMax {
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = true;
-					board.showBoard();
-					System.out.println("Row: " + newMove.row);
-					System.out.println("Column: " + newMove.column);
-					System.out.println("Score: " + board.board.eval(player));
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
 					board = undo(board, newMove);
 					if(bestMove == null || bestMove.score > tempPos.score){

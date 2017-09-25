@@ -21,16 +21,6 @@ public class Main {
 		GomokuModel gm = new GomokuModel();
 		MiniMax mmx = new MiniMax();
 		Position pos = new Position(0, 0, 0, " ", gm);
-		pos.g.setBoard(7, "G", "X");
-		pos.g.setBoard(5, "E", "X");
-		pos.g.setBoard(4, "D", "X");
-		pos.g.setBoard(4, "C", "O");
-		pos.g.setBoard(2, "H", "O");
-		pos.g.setBoard(8, "B", "O");
-		pos.g.showBoard();
-		pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "O", false);
-		pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), "O");
-		pos.g.showBoard();
 	
 		try{
 			
@@ -43,7 +33,7 @@ public class Main {
         String fileSeparator = System.getProperty("file.separator");
         String textFile = parentPath + fileSeparator + "end_game";
         File endFile = new File(textFile);
-        /*
+        
         while(true){
 	        //Check if end_game.txt exists
 	        if(!endFile.exists()){
@@ -51,7 +41,7 @@ public class Main {
 	            LinkedList<String> goFiles = new LinkedList<String>();
 	            File dir = new File(parentPath);
 	            for (File file : dir.listFiles()) {
-	              if (file.getName().equals("bomb.go")) {
+	              if (file.getName().equals("bom.go")) {
 	                goFiles.add(file.getName());
 	              }
 	            }
@@ -65,18 +55,9 @@ public class Main {
 		     				br = new BufferedReader(fr);
 		     				sCurrentLine = br.readLine();
 			     	       	if(sCurrentLine != null) {
-			     	    	   if(sCurrentLine.equals("")){
-			     	    		   	mystone = "O";
-				    	        	String move = "bomb H 7";
-				    	        	pos.g.writeFile(textFile, move);
-				    	        	pos.g.setBoard(7,"H", mystone);
-				    	        	pos.g.showBoard();
-				    	        	went = true;
-				    	        	continue;
-			     	    	   }
-			     	    	   	if(mystone == null){
-			     	    	   		mystone = "X";
-			     	    	   	}
+			     	       		if(mystone == null){
+			     	       			mystone = "X";
+			     	       		}
 			     	        	String[] token = sCurrentLine.split("\\s+");
 			     	        	if(mystone.equals("X")){
 			     	        		otherstone = "O";
@@ -86,17 +67,17 @@ public class Main {
 			     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
 			     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, false);
 			     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);
-			     	        	pos.g.showBoard();
-			     	        	String move = "bomb " + pos.g.parseCol(pos.column + 1) + " " + (pos.row);
+			     	        	pos.g.showBoard(mystone);
+			     	        	String move = "bom " + pos.g.parseCol(pos.column + 1) + " " + (pos.row + 1);
 			     	        	pos.g.writeFile(textFile, move);
 			     	        	went = true;
 			     	        	continue;
 			     	        }else{
 				     	        mystone = "O";
-			    	        	String move = "bomb H 7";
+			    	        	String move = "bom H 7";
 			    	        	pos.g.writeFile(textFile, move);
 			    	        	pos.g.setBoard(7,"H", mystone);
-			    	        	pos.g.showBoard();
+			    	        	pos.g.showBoard(mystone);
 			    	        	went = true;
 			    	        	continue;
 			     	        }
@@ -122,7 +103,7 @@ public class Main {
 	        }else{
 	        	break;
 	        }
-        }   */ 
+        }   
    
 		}catch(Exception e){
 			

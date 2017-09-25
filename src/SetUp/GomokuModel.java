@@ -83,10 +83,18 @@ public class GomokuModel {
 		
 	}
 	
-	public void showBoard(){
+	public void showBoard(String player){
 		//String rows = "+---+---+---+---+---+";
+		String first, second;
+		if(player.equals("O")){
+			first = player;
+			second = "X";
+		}else{
+			first = "O";
+			second = player;
+		}
 		String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
-		System.out.println(rows);
+		System.out.println(rows + "         Player 1: " + first + "    Player 2: " + second);
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < n; j++){
 				if(board.cells[i][j] == null){
