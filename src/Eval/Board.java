@@ -83,7 +83,7 @@ public Integer eval(String player)
         		
         				
         		}
-        		else if(cells[i][j].equals("X")){
+        		else if(cells[i][j].equals(opp)){
         			LinkedList<Cell> hl = new LinkedList<Cell>();
         			LinkedList<Cell> vl = new LinkedList<Cell>();
         			LinkedList<Cell> dul = new LinkedList<Cell>();
@@ -211,8 +211,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	}
         	if(currpath.player.equals(player)){
         		score += tempscore;
-        	}
-        	else{
+        	}else{
         		score -= tempscore;
         	}
         }
@@ -220,12 +219,14 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
 	return score;
 }
 
+
 private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 	Boolean visited = false;
 	
-	if (j > 0 && j < 14){
+	//System.out.println("CURRENT NODE: " + (i) + "," + (j));
+	if (j > 0){
 		
-		if (cells[i][j-1].equals(player)){
+		if (cells[i][j-1]  == player){
 			Cell c = new Cell(i,j - 1);
 
 			for (Cell c1 : p.path) {
@@ -234,13 +235,15 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+				//System.out.println("ADDED NODE: " + (i) + "," + (j-1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundHoriz(i, j-1, p, player);
 			}
 		}
-	
-		if (cells[i][j+1].equals(player)){
+	}
+	if(j < 14){
+		if (cells[i][j+1]  == player){
 			Cell c = new Cell(i,j + 1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j+1 && c1.vert == i){
@@ -248,6 +251,7 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+				//System.out.println("ADDED NODE: " + (i) + "," + (j+1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundHoriz(i, j+1, p, player);
@@ -260,9 +264,9 @@ private Integer searchAroundHoriz(int i, int j, Path p, String player) {
 
 private Integer searchAroundVert(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	
-	if (i < 14 && i > 0  && j < 14 && j > 0){
-		if (cells[i-1][j].equals(player)){
+	//System.out.println("CURRENT NODE: " + (i) + "," + (j));
+	if (i > 0){
+		if (cells[i-1][j]  == player){
 			Cell c = new Cell(i-1,j);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j && c1.vert == i-1){
@@ -270,12 +274,15 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+				//System.out.println("ADDED NODE: " + (i-1) + "," + (j));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundVert(i-1, j, p, player);
 			}
 		}
-		if (cells[i+1][j].equals(player)){
+	}
+	if(i < 14){
+		if (cells[i+1][j]  == player){
 			Cell c = new Cell(i+1,j);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j && c1.vert == i+1){
@@ -283,6 +290,7 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+				//System.out.println("ADDED NODE: " + (i+1) + "," + (j));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundVert(i+1, j, p, player);
@@ -296,8 +304,9 @@ private Integer searchAroundVert(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	if (i < 14 && i > 0  && j < 14 && j > 0){
-		if (cells[i+1][j+1].equals(player)){
+	//System.out.println("CURRENT NODE: " + (i) + "," + (j));
+	if (i < 14 && j < 14){
+		if (cells[i+1][j+1] == player){
 			Cell c = new Cell(i+1,j+1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j+1 && c1.vert == i+1){
@@ -305,13 +314,15 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+			//System.out.println("ADDED NODE: " + (i+1) + "," + (j+1));
 			p.score = p.score + 1;
 			p.path.addFirst(c);
 			searchAroundDiagDown(i+1, j+1, p, player);
 			}
 		}
-		
-		if (cells[i-1][j-1].equals(player)){
+	}
+	if(i > 0 && j > 0){		
+		if (cells[i-1][j-1]  == player){
 			Cell c = new Cell(i-1,j-1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j-1 && c1.vert == i-1){
@@ -319,6 +330,7 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+				//System.out.println("ADDED NODE: " + (i-1) + "," + (j-1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagDown(i-1, j-1, p, player);
@@ -333,8 +345,9 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	Boolean visited = false;
-	if (i < 14 && i > 0  && j < 14 && j > 0){
-		if (cells[i-1][j+1].equals(player)){
+//	System.out.println("CURRENT NODE: " + (i) + "," + (j));
+	if (j < 14 && i > 0){
+		if (cells[i-1][j+1] == player){
 			Cell c = new Cell(i-1,j+1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j+1 && c1.vert == i-1){
@@ -342,12 +355,15 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+			//	System.out.println("ADDED NODE: " + (i-1) + "," + (j+1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagUp(i-1, j+1, p, player);
 			}
 		}
-		if (cells[i+1][j-1].equals(player)){
+	}
+	if(i < 14 && j > 0){
+		if (cells[i+1][j-1] == player){
 			Cell c = new Cell(i+1,j-1);
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j-1 && c1.vert == i+1){
@@ -355,6 +371,7 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 				}
 			}
 			if(!visited){
+			//	System.out.println("ADDED NODE: " + (i+1) + "," + (j-1));
 				p.score = p.score + 1;
 				p.path.addFirst(c);
 				searchAroundDiagUp(i+1, j-1, p, player);
