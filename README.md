@@ -1,6 +1,8 @@
 Project 2: Gomuku Model
+-
 
 Group Memebers:
+-
 - Jonathan Metzger
 - Kien Nhan
 - Joseph Wilder
