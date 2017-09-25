@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public class Board {
 	
 public String[][] cells = new String[15][15];
+public LinkedList<Path> pl = new LinkedList<Path>();
 
 
 public Board()
@@ -108,24 +109,9 @@ public Integer eval(String player)
         			pathlist.add(dup);
         			pathlist.add(ddp);
         	
-        		}
-        		
-        }
-        
-        
+        		}       		
+        }          
     }
-	Collections.sort(pathlist, new Comparator<Path>(){
-		   @Override
-		   public int compare(Path o1, Path o2){
-		        if(o1.score.compareTo(o2.score) < 0){
-		           return -1; 
-		        }
-		        if(o1.score.compareTo(o2.score) > 0){
-		           return 1; 
-		        }
-		        return 0;
-		   }
-		}); 
 	
 	Integer finalscore = scoreBoard(pathlist, player);
 	return finalscore;
@@ -139,18 +125,22 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	
         	if (currpath.path.size() == 1){
             	if(currpath.player.equals(player)){
+            		currpath.score = 10;
             		score += 10;
             	}
             	else{
+            		currpath.score = -10;
             		score -= 10;
             	}
         		continue;
         	}
         	if (currpath.path.size() == 2){
             	if(currpath.player.equals(player)){
+            		currpath.score = 50;
             		score += 50;
             	}
             	else{
+            		currpath.score = -50;
             		score -= 50;
             	}
         		continue;
@@ -183,29 +173,36 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
     		}
     		
         	if(currpath.path.size() >= 5){
+        		currpath.score = 10000000;
         		tempscore += 10000000;
         	}
         	
         	else if(cells[newi][newj].equals(" ") && cells[newistart][newjstart].equals(" ")){
         		if (currpath.path.size() == 4){
+        			currpath.score = 10000000;
         			tempscore += 10000000;
         		}
         		else if (currpath.path.size() == 3){
+        			currpath.score = 1000;
         			tempscore += 1000;
         		}
         		else if (currpath.path.size() == 2){
+        			currpath.score = 200;
         			tempscore += 200;
         		}
 
         	}
         	else if(cells[newi][newj].equals(" ")|| cells[newistart][newjstart].equals(" ")){
         		if (currpath.path.size() == 4){
+        			currpath.score = 2000;
         			tempscore += 2000;
         		}
         		else if (currpath.path.size() == 3){
+        			currpath.score = 500;
         			tempscore += 500;
         		}
         		else if (currpath.path.size() == 2){
+        			currpath.score = 50;
         			tempscore += 50;
         		}
         	}
@@ -213,9 +210,23 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         		score += tempscore;
         	}else{
         		score -= tempscore;
+        		currpath.score = -currpath.score;
         	}
         }
 
+    	Collections.sort(pathlist, new Comparator<Path>(){
+ 		   @Override
+ 		   public int compare(Path o1, Path o2){
+ 		        if(o1.score.compareTo(o2.score) < 0){
+ 		           return -1; 
+ 		        }
+ 		        if(o1.score.compareTo(o2.score) > 0){
+ 		           return 1; 
+ 		        }
+ 		        return 0;
+ 		   }
+ 		}); 
+        this.pl = pathlist;
 	return score;
 }
 
