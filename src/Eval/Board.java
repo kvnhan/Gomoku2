@@ -13,7 +13,6 @@ public LinkedList<Path> pl = new LinkedList<Path>();
 
 public Board()
 {
-	this.cells = cells;
 }
 
 public void initBoard()
@@ -143,23 +142,34 @@ public Integer eval(String player)
 	return finalscore;
 }
 
+// Helper function to perform the actual board scoring
+// Also orders the list of all paths on a board by their score
 private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
 	Integer score = 0;
+	
+		// For each path...
         for(int j=0; j<pathlist.size(); j++) {
+
         	Integer tempscore = 0;
         	Path currpath = pathlist.get(j);
         	
+        	// Paths of length 1 are worth very little
         	if (currpath.path.size() == 1){
             	if(currpath.player.equals(player)){
             		currpath.score = 10;
             		score += 10;
             	}
-            	else{
+            	else{       		
+            		// Opponents paths always have negative scores
             		currpath.score = -10;
             		score -= 10;
             	}
+            	
+            	// No additional checking needed
         		continue;
         	}
+        	
+        	// Ditto for paths of length 2
         	if (currpath.path.size() == 2){
             	if(currpath.player.equals(player)){
             		currpath.score = 50;
@@ -169,22 +179,49 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
             		currpath.score = -50;
             		score -= 50;
             	}
+            	
+            	// No additional checking needed
         		continue;
         	}
+        	
+        	// Paths of length 5 automatically win
+        	if (currpath.path.size() == 5){
+            	if(currpath.player.equals(player)){
+            		currpath.score = 10000000;
+            		score += 10000000;
+            	}
+            	else{
+            		currpath.score = -10000000;
+            		score -= 10000000;
+            	}
+            	
+            	// No additional checking needed
+        		continue;
+        	}
+        	
+        	// Find the end cells in each path, and the cells just before/after
+        	// Need this info to figure out where the "ends" of a path should be
     		Cell firstcell = currpath.path.getFirst();
     		Cell second = currpath.path.get(1);
     		Cell secondtolast = currpath.path.get(currpath.path.size() - 2);
     		Cell lastcell = currpath.path.getLast();
     		
+    		// Figure out which direction to look
     		Integer diffi = secondtolast.vert - lastcell.vert;
     		Integer diffj = secondtolast.horiz - lastcell.horiz;
     		Integer newi = lastcell.vert - diffi;
     		Integer newj = lastcell.horiz - diffj;
     		
+    		// Calculate the coordinates of the cells before/after the path
+    		// Works in any direction
+    		// (I'll call these boundaries)
     		Integer diffistart = second.vert - firstcell.vert;
     		Integer diffjstart = second.horiz - firstcell.horiz;
     		Integer newistart = firstcell.vert - diffistart;
     		Integer newjstart = firstcell.horiz - diffjstart;
+    		
+    		// If one of the boundaries is outside the bounds of the board,
+    		// Just truncate it to the end of the actual path
     		if(newjstart > 14 || newjstart < 0){
     			newjstart = firstcell.horiz;
     		}
@@ -197,41 +234,40 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
     		if(newi > 14 || newistart < 0){
     			newi = lastcell.vert;
     		}
-    		
-        	if(currpath.path.size() >= 5){
-        		currpath.score = 10000000;
-        		tempscore += 10000000;
-        	}
-        	
+   
+        	// If both "boundary" cells are empty...
         	else if(cells[newi][newj].equals(" ") && cells[newistart][newjstart].equals(" ")){
+        		// A path of size 4 is an automatic win
+        		// (Cannot be blocked)
         		if (currpath.path.size() == 4){
         			currpath.score = 10000000;
         			tempscore += 10000000;
         		}
+        		// A path of size 3 is okay
         		else if (currpath.path.size() == 3){
         			currpath.score = 1000;
         			tempscore += 1000;
         		}
-        		else if (currpath.path.size() == 2){
-        			currpath.score = 200;
-        			tempscore += 200;
-        		}
 
         	}
+    		
+    		// If only one boundary is empty...
         	else if(cells[newi][newj].equals(" ")|| cells[newistart][newjstart].equals(" ")){
+        		// A path of size 4 is good but not a guaranteed win
         		if (currpath.path.size() == 4){
         			currpath.score = 2000;
         			tempscore += 2000;
         		}
+        		// A path of size 3 is okay
         		else if (currpath.path.size() == 3){
         			currpath.score = 500;
         			tempscore += 500;
         		}
-        		else if (currpath.path.size() == 2){
-        			currpath.score = 50;
-        			tempscore += 50;
-        		}
         	}
+    		
+    		// (NOTICE WE DO NOT CARE ABOUT PATHS THAT ARE BLOCKED ON BOTH ENDS)
+    		
+    		// Flip the cardinality of the score if opponent
         	if(currpath.player.equals(player)){
         		score += tempscore;
         	}else{
@@ -240,6 +276,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	}
         }
 
+        // Sort the path list in order of the path scores
     	Collections.sort(pathlist, new Comparator<Path>(){
  		   @Override
  		   public int compare(Path o1, Path o2){
@@ -252,7 +289,11 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
  		        return 0;
  		   }
  		}); 
-        this.pl = pathlist;
+    	
+    // Set this local pathlist to be this boards pathlist
+    this.pl = pathlist;
+        
+    // Return the total score for the board
 	return score;
 }
 
