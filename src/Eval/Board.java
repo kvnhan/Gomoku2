@@ -39,7 +39,7 @@ public void makeMove(Integer h, Integer v, String value){
 	cells[h][v] = value;
 }
 
-public Integer eval()
+public Integer eval(String player)
 {
 
 	Integer horizcount = 0;
@@ -47,10 +47,16 @@ public Integer eval()
 	Integer diagupcount = 0;
 	Integer diagdowncount = 0;
 	LinkedList<Path> pathlist = new LinkedList<Path>();
+	String opp;
+	if(player.equals("O")){
+		opp = "X";
+	}else{
+		opp = "O";
+	}
 	for(int i=0; i<cells.length; i++) {
 
         for(int j=0; j<cells[i].length; j++) {
-        		if(cells[i][j].equals("O")){
+        		if(cells[i][j].equals(player)){
         			LinkedList<Cell> hl = new LinkedList<Cell>();
         			LinkedList<Cell> vl = new LinkedList<Cell>();
         			LinkedList<Cell> dul = new LinkedList<Cell>();
@@ -60,15 +66,15 @@ public Integer eval()
         			vl.add(c);
         			dul.add(c);
         			ddl.add(c);
-        			Path vp = new Path(0, vl, "vert", "O");
-        			Path hp = new Path(0, hl, "horiz", "O");
-        			Path dup = new Path(0, dul, "diagup", "O");
-        			Path ddp = new Path(0, ddl, "diagdown", "O");
+        			Path vp = new Path(0, vl, "vert", player);
+        			Path hp = new Path(0, hl, "horiz", player);
+        			Path dup = new Path(0, dul, "diagup", player);
+        			Path ddp = new Path(0, ddl, "diagdown", player);
 
-        			horizcount = searchAroundHoriz(i, j, hp, "O");
-        			vertcount = searchAroundVert(i, j, vp, "O");
-        			diagupcount = searchAroundDiagUp(i, j, dup, "O");
-        			diagdowncount = searchAroundDiagDown(i, j, ddp, "O");
+        			horizcount = searchAroundHoriz(i, j, hp, player);
+        			vertcount = searchAroundVert(i, j, vp, player);
+        			diagupcount = searchAroundDiagUp(i, j, dup, player);
+        			diagdowncount = searchAroundDiagDown(i, j, ddp, player);
         			
         			pathlist.add(vp);
         			pathlist.add(hp);
@@ -87,15 +93,15 @@ public Integer eval()
         			vl.add(c);
         			dul.add(c);
         			ddl.add(c);
-        			Path vp = new Path(0, vl, "vert", "X");
-        			Path hp = new Path(0, hl, "horiz", "X");
-        			Path dup = new Path(0, dul, "diagup", "X");
-        			Path ddp = new Path(0, ddl, "diagdown", "X");
+        			Path vp = new Path(0, vl, "vert", opp);
+        			Path hp = new Path(0, hl, "horiz", opp);
+        			Path dup = new Path(0, dul, "diagup", opp);
+        			Path ddp = new Path(0, ddl, "diagdown", opp);
 
-        			horizcount = searchAroundHoriz(i, j, hp, "X");
-        			vertcount = searchAroundVert(i, j, vp, "X");
-        			diagupcount = searchAroundDiagUp(i, j, dup, "X");
-        			diagdowncount = searchAroundDiagDown(i, j, ddp, "X");
+        			horizcount = searchAroundHoriz(i, j, hp, opp);
+        			vertcount = searchAroundVert(i, j, vp, opp);
+        			diagupcount = searchAroundDiagUp(i, j, dup, opp);
+        			diagdowncount = searchAroundDiagDown(i, j, ddp, opp);
         			
         			pathlist.add(vp);
         			pathlist.add(hp);
@@ -121,19 +127,18 @@ public Integer eval()
 		   }
 		}); 
 	
-	Integer finalscore = scoreBoard(pathlist);
-	
+	Integer finalscore = scoreBoard(pathlist, player);
 	return finalscore;
 }
 
-private Integer scoreBoard(LinkedList<Path> pathlist) {
+private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
 	Integer score = 0;
         for(int j=0; j<pathlist.size(); j++) {
         	Integer tempscore = 0;
         	Path currpath = pathlist.get(j);
         	
         	if (currpath.path.size() == 1){
-            	if(currpath.player.equals("O")){
+            	if(currpath.player.equals(player)){
             		score += 10;
             	}
             	else{
@@ -142,7 +147,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         		continue;
         	}
         	if (currpath.path.size() == 2){
-            	if(currpath.player.equals("O")){
+            	if(currpath.player.equals(player)){
             		score += 50;
             	}
             	else{
@@ -204,7 +209,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist) {
         			tempscore += 50;
         		}
         	}
-        	if(currpath.player.equals("O")){
+        	if(currpath.player.equals(player)){
         		score += tempscore;
         	}
         	else{
@@ -383,12 +388,12 @@ public Integer minimax(Board b, Integer depth, String player, Integer alpha, Int
 	
 	//check if this is a leaf
 	if (depth == 2){
-        return b.eval();
+        return b.eval(player);
 	}
     
-    if (player == "O"){
+    if (player == player){
         best = -200000000; // "negative infinity"
-        LinkedList<Board> childBoards = b.generateChildren("O");
+        LinkedList<Board> childBoards = b.generateChildren(player);
         for (Board cb : childBoards){
             Integer value = minimax(cb, depth+1, "X", alpha, beta);
             best = Math.max(best, value);
@@ -403,7 +408,7 @@ public Integer minimax(Board b, Integer depth, String player, Integer alpha, Int
         best= 2000000; // "positive infinity"
         LinkedList<Board> childBoards = b.generateChildren("X");
         for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, "O", alpha, beta);
+            Integer value = minimax(cb, depth+1, player, alpha, beta);
             best = Math.min( best, value);
             beta = Math.min( beta, value);
             if (beta <= alpha){

@@ -23,7 +23,6 @@ public class Main {
 		Position pos = new Position(0, 0, 0, " ", gm);
 		pos.g.setBoard(7, "G", "X");
 		pos.g.setBoard(5, "E", "X");
-		pos.g.setBoard(5, "F", "X");
 		pos.g.setBoard(4, "D", "X");
 		pos.g.setBoard(4, "C", "O");
 		pos.g.setBoard(2, "H", "O");
