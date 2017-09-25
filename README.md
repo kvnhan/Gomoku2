@@ -29,17 +29,17 @@ Results:
 - Tests Ran:
 	- x
 - Program play against human?:
- 	-x
+ 	- x
 - Program play against self?:
  	- x
 - Program play against other programs?:
-	-x
+	- x
 - Program Performance:
-	-x
+	- x
 - Strengths:
-	-x
+	- x
 - Weaknesses:
-	-x
+	- x
 	
 Discussion on why evaluation function and heuristics chosen are good choices:
 - 
