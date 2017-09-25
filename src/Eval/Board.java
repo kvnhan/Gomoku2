@@ -411,41 +411,5 @@ private LinkedList<Board>generateChildren(String player){
 	return children;
 }
 
-public Integer minimax(Board b, Integer depth, String player, Integer alpha, Integer beta) {
-	Integer best = 0; //temp
-	
-	//check if this is a leaf
-	if (depth == 2){
-        return b.eval(player);
-	}
-    
-    if (player == player){
-        best = -200000000; // "negative infinity"
-        LinkedList<Board> childBoards = b.generateChildren(player);
-        for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, "X", alpha, beta);
-            best = Math.max(best, value);
-            alpha = Math.max(alpha, best);
-            if (beta <= alpha){
-            	break;
-            }
-        }
-        return best;
-    }
-    else{
-        best= 2000000; // "positive infinity"
-        LinkedList<Board> childBoards = b.generateChildren("X");
-        for (Board cb : childBoards){
-            Integer value = minimax(cb, depth+1, player, alpha, beta);
-            best = Math.min( best, value);
-            beta = Math.min( beta, value);
-            if (beta <= alpha){
-                break;
-            }
-        }
-        return best;
-    }
-}	
-
 }
 

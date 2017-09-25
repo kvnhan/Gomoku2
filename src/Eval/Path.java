@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class Path {
 	Integer score;
 	LinkedList<Cell> path;
-	String dir;
+	String dir; 
 	String player;
 	
 	public Path(Integer score, LinkedList<Cell> path, String dir, String player){
