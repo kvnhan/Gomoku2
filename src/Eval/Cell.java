@@ -3,9 +3,9 @@ package Eval;
 
 // Class to represent individual pieces on the board
 public class Cell {
-	Integer horiz; // Horizontal position on the board
-	Integer vert; // Vertical position on the board
-	String occupiedBy; // Whose cell is on this piece
+	public Integer horiz; // Horizontal position on the board
+	public Integer vert; // Vertical position on the board
+	public String occupiedBy; // Whose cell is on this piece
 	
 	
 	// Constructor

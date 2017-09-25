@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import Eval.Board;
+import Eval.Cell;
+import Eval.Path;
 
 
 
@@ -43,6 +45,98 @@ public class MiniMax {
 		return g;
 	}
 	
+	public Position evalThreat(Path threat, GomokuModel board, String player){
+		Position move = null;
+		if(threat.path.size() > 2){
+			Cell first;
+			Cell last;
+			first = threat.path.getFirst();
+			last = threat.path.getLast();
+			if(threat.dir.equals("vert")){
+				if(first.vert - 1 >= 0){
+					if(board.board.cells[first.vert - 1][first.horiz] != null){
+						if(board.board.cells[first.vert - 1][first.horiz].equals(" ") ||
+								board.board.cells[first.vert - 1][first.horiz] == null){
+							move = new Position(first.vert - 1, first.horiz, 0, player, board);
+							return move;
+						}
+					}
+				}
+				if(last.vert + 1 <= 14){
+					if(board.board.cells[last.vert + 1][last.horiz] != null){
+						if(board.board.cells[last.vert + 1][last.horiz].equals(" ") ||
+								board.board.cells[last.vert + 1][last.horiz] == null){
+							move = new Position(last.vert + 1,last.horiz, 0, player, board);
+							return move;
+						}
+					}
+				}
+				board.board.discardThreat();
+					evalThreat(board.board.pl.getFirst(), board, player);
+				
+			}else if(threat.dir.equals("horiz")){
+					if(first.horiz - 1 >= 0){
+						if(board.board.cells[first.vert][first.horiz - 1] != null){
+							if(board.board.cells[first.vert][first.horiz - 1].equals(" ")){
+								move = new Position(first.vert, first.horiz - 1, 0, player, board);
+								return move;
+							}
+						}
+					}
+					if(last.horiz + 1 <= 14){
+						if(board.board.cells[last.vert][last.horiz + 1] != null){
+							if(board.board.cells[last.vert][last.horiz + 1].equals(" ")){
+								move = new Position(last.vert, last.horiz + 1, 0, player, board);
+								return move;
+							}
+						}
+					}
+					board.board.discardThreat();
+						evalThreat(board.board.pl.getFirst(), board, player);
+			}else if(threat.dir.equals("diagup")){
+					if(first.horiz + 1 <= 14 && first.vert - 1 >= 0){
+						if(board.board.cells[first.vert - 1][first.horiz + 1] != null){
+							if(board.board.cells[first.vert - 1][first.horiz + 1].equals(" ")){
+								move = new Position(first.vert - 1, first.horiz + 1, 0, player, board);
+								return move;
+							}
+						}
+					}
+					if(last.horiz - 1 >= 0 && last.vert + 1 <= 14){
+						if(board.board.cells[last.vert + 1][last.horiz - 1] != null){
+							if(board.board.cells[last.vert + 1][last.horiz - 1].equals(" ")){
+								move = new Position(last.vert + 1, last.horiz - 1, 0, player, board);
+								return move;
+						}
+					}
+					
+					board.board.discardThreat();
+					evalThreat(board.board.pl.getFirst(), board, player);
+					}
+			}else if(threat.dir.equals("diagdown")){
+					if(first.horiz - 1 >= 0 && first.vert - 1 >= 0){
+						if(board.board.cells[first.vert - 1][first.horiz - 1] != null){
+							if(board.board.cells[first.vert - 1][first.horiz - 1].equals(" ")){
+								move = new Position(first.vert - 1, first.horiz - 1, 0, player, board);
+								return move;
+							}
+						}
+					}
+					if(last.horiz + 1 <= 14 && last.vert + 1 <= 14){
+						if(board.board.cells[last.vert + 1][last.horiz + 1] != null){
+							if(board.board.cells[last.vert + 1][last.horiz + 1].equals(" ")){
+								move = new Position(last.vert + 1, last.horiz + 1, 0, player, board);
+								return move;
+							}
+						}
+					}
+					board.board.discardThreat();
+					evalThreat(board.board.pl.getFirst(), board, player);
+				}
+			}
+					
+		return move;
+	}
 	public Position minimax(GomokuModel board, int depth, double alpha, double beta, String player, boolean save){
 		Position tempPos;
 		Board b = new Board();
@@ -58,6 +152,20 @@ public class MiniMax {
 		
 		LinkedList<Position> moveList = new LinkedList<Position>();
 		
+		
+		// Get a list of threats and settle them
+		if(myTurn){
+			int tempScore = board.board.eval(player);
+			Path threat = null;
+			threat = board.board.pl.getFirst();
+			Position p = null;
+			p = evalThreat(threat, board, player);
+			System.out.println("Threat: " + threat.score);
+			if(p != null){
+				return p;
+			}
+				
+		}
 		//Get empty locations around each player's stone locations
 		Position temp = null;
 		String opponent;
@@ -168,7 +276,7 @@ public class MiniMax {
 					if(beta <= alpha){
 						break;
 					}
-					if(tempPos.score <= -3500){
+					if(tempPos.score <= -1000){
 						board = reset();
 						bestMove.score = tempPos.score;
 						return bestMove;

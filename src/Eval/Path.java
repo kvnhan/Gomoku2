@@ -4,9 +4,9 @@ import java.util.LinkedList;
 
 // Class to describe continuous streaks of pieces on the board
 public class Path {
-	Integer score;			 // The score of this individual path
-	LinkedList<Cell> path; 	 // The cells in this path
-	String dir;  			 // The direction this path is headed 
+	public Integer score;			 // The score of this individual path
+	public LinkedList<Cell> path; 	 // The cells in this path
+	public String dir;  			 // The direction this path is headed 
 				 			 // (Horiz, Vert, DiagUp, DiagDown)
 	String player;			 // The player to whose pieces make up the path
 	

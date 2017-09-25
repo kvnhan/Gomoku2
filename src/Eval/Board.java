@@ -24,6 +24,11 @@ public void initBoard()
         }
     }
 }
+
+public void discardThreat(){
+	this.pl.removeFirst();
+}
+
 public void printBoard() 
 {
 	System.out.println("=================================");
@@ -72,10 +77,10 @@ public Integer eval(String player)
         			Cell c = new Cell(i, j);
         			
         			// This cell belongs to all possible paths
-        			hl.add(c);
-        			vl.add(c);
-        			dul.add(c);
-        			ddl.add(c);
+        			hl.addFirst(c);
+        			vl.addFirst(c);
+        			dul.addFirst(c);
+        			ddl.addFirst(c);
         			
         			// Make a path object to represent these streaks
         			Path vp = new Path(0, vl, "vert", player);
@@ -91,10 +96,10 @@ public Integer eval(String player)
         			searchAroundDiagDown(i, j, ddp, player);
         			
         			// Add all of these paths to the list of paths on this board
-        			pathlist.add(vp);
-        			pathlist.add(hp);
-        			pathlist.add(dup);
-        			pathlist.add(ddp);
+        			pathlist.addFirst(vp);
+        			pathlist.addFirst(hp);
+        			pathlist.addFirst(dup);
+        			pathlist.addFirst(ddp);
         		}
         		
         		// Do the same for an opponents piece...
@@ -110,10 +115,10 @@ public Integer eval(String player)
         			Cell c = new Cell(i, j);
         			
         			// This cell belongs to all possible paths
-        			hl.add(c);
-        			vl.add(c);
-        			dul.add(c);
-        			ddl.add(c);
+        			hl.addFirst(c);
+        			vl.addFirst(c);
+        			dul.addFirst(c);
+        			ddl.addFirst(c);
         			
         			// Make a path object to represent these streaks
         			Path vp = new Path(0, vl, "vert", opp);
@@ -129,10 +134,10 @@ public Integer eval(String player)
         			searchAroundDiagDown(i, j, ddp, opp);
         			
         			// Add all of these paths to the list of paths on this board
-        			pathlist.add(vp);
-        			pathlist.add(hp);
-        			pathlist.add(dup);
-        			pathlist.add(ddp);
+        			pathlist.addFirst(vp);
+        			pathlist.addFirst(hp);
+        			pathlist.addFirst(dup);
+        			pathlist.addFirst(ddp);
         		}       		
         }          
     }
