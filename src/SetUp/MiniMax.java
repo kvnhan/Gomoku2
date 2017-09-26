@@ -72,7 +72,8 @@ public class MiniMax {
 					}
 				}
 				board.board.discardThreat();
-					evalThreat(board.board.pl.getFirst(), board, player);
+				move = evalThreat(board.board.pl.getFirst(), board, player);
+				return move;
 				
 			}else if(threat.dir.equals("horiz")){
 					if(first.horiz - 1 >= 0){
@@ -92,7 +93,8 @@ public class MiniMax {
 						}
 					}
 					board.board.discardThreat();
-						evalThreat(board.board.pl.getFirst(), board, player);
+					move = evalThreat(board.board.pl.getFirst(), board, player);
+					return move;
 			}else if(threat.dir.equals("diagup")){
 					if(first.horiz + 1 <= 14 && first.vert - 1 >= 0){
 						if(board.board.cells[first.vert - 1][first.horiz + 1] != null){
@@ -111,7 +113,8 @@ public class MiniMax {
 					}
 					
 					board.board.discardThreat();
-					evalThreat(board.board.pl.getFirst(), board, player);
+					move = evalThreat(board.board.pl.getFirst(), board, player);
+					return move;
 					}
 			}else if(threat.dir.equals("diagdown")){
 					if(first.horiz - 1 >= 0 && first.vert - 1 >= 0){
@@ -131,7 +134,8 @@ public class MiniMax {
 						}
 					}
 					board.board.discardThreat();
-					evalThreat(board.board.pl.getFirst(), board, player);
+					move = evalThreat(board.board.pl.getFirst(), board, player);
+					return move;
 				}
 			}
 					
@@ -160,7 +164,6 @@ public class MiniMax {
 			threat = board.board.pl.getFirst();
 			Position p = null;
 			p = evalThreat(threat, board, player);
-			System.out.println("Threat: " + threat.score);
 			if(p != null){
 				return p;
 			}
