@@ -14,6 +14,8 @@ public class MiniMax {
 
 	boolean myTurn = true;
 	boolean first = true;
+	boolean stoneChange = false;
+	Position recentMove = null;
 	LinkedList<Position> originalBoard = new LinkedList<Position>();
 	
 	// Keep the  original board before changes being made
@@ -117,18 +119,18 @@ public class MiniMax {
 					return move;
 					}
 			}else if(threat.dir.equals("diagdown")){
-					if(first.horiz - 1 >= 0 && first.vert - 1 >= 0){
-						if(board.board.cells[first.vert - 1][first.horiz - 1] != null){
-							if(board.board.cells[first.vert - 1][first.horiz - 1].equals(" ")){
-								move = new Position(first.vert - 1, first.horiz - 1, 0, player, board);
+					if(first.horiz + 1 >= 0 && first.vert + 1 >= 0){
+						if(board.board.cells[first.vert + 1][first.horiz + 1] != null){
+							if(board.board.cells[first.vert + 1][first.horiz + 1].equals(" ")){
+								move = new Position(first.vert + 1, first.horiz + 1, 0, player, board);
 								return move;
 							}
 						}
 					}
-					if(last.horiz + 1 <= 14 && last.vert + 1 <= 14){
-						if(board.board.cells[last.vert + 1][last.horiz + 1] != null){
-							if(board.board.cells[last.vert + 1][last.horiz + 1].equals(" ")){
-								move = new Position(last.vert + 1, last.horiz + 1, 0, player, board);
+					if(last.horiz - 1 <= 14 && last.vert - 1 <= 14){
+						if(board.board.cells[last.vert - 1][last.horiz - 1] != null){
+							if(board.board.cells[last.vert - 1][last.horiz - 1].equals(" ")){
+								move = new Position(last.vert - 1, last.horiz - 1, 0, player, board);
 								return move;
 							}
 						}
@@ -158,7 +160,7 @@ public class MiniMax {
 		
 		
 		// Get a list of threats and settle them
-		if(myTurn){
+		if(myTurn && stoneChange == false){
 			int tempScore = board.board.eval(player);
 			Path threat = null;
 			threat = board.board.pl.getFirst();
@@ -168,6 +170,13 @@ public class MiniMax {
 				return p;
 			}
 				
+		}else if(stoneChange){
+			int tempScore = board.board.eval(player);
+			
+			if(tempScore <= -1000){
+				Position p = new Position(recentMove.row, recentMove.column, tempScore, player, board);
+				return p;
+			}
 		}
 		//Get empty locations around each player's stone locations
 		Position temp = null;
@@ -237,7 +246,9 @@ public class MiniMax {
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = false;
+					stoneChange = true;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
+					stoneChange = false;
 					board = undo(board, newMove);
 					if(bestMove == null || bestMove.score < tempPos.score){
 						bestMove = newMove;
@@ -264,6 +275,7 @@ public class MiniMax {
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = true;
+					recentMove = newMove;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
 					board = undo(board, newMove);
 					if(bestMove == null || bestMove.score > tempPos.score){

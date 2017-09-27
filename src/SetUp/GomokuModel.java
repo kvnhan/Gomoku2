@@ -93,15 +93,22 @@ public class GomokuModel {
 			first = "O";
 			second = player;
 		}
-		String rows = "+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
+		String labels = "       A   B   C   D   E   F   G   H   I   J   K   L   M   N   O  ";
+		System.out.println(labels);
+		String rows = "     +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+";
 		System.out.println(rows + "         Player 1: " + first + "    Player 2: " + second);
 		for(int i = 0; i < n; i++){
+			if(i + 1 >= 10){
+				System.out.print((i + 1));
+				}else{
+					System.out.print((i + 1) + " ");
+				}
 			for(int j = 0; j < n; j++){
 				if(board.cells[i][j] == null){
 					board.cells[i][j] = " ";
 				}
 				if(j == 0){
-					System.out.print("| " + board.cells[i][j]);
+					System.out.print("   | " + board.cells[i][j]);
 				}else if(j == n - 1){
 					System.out.print(" | " + board.cells[i][j] + " |");
 					System.out.println();

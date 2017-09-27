@@ -236,7 +236,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
     		if(newj > 14 || newj < 0){
     			newj = lastcell.horiz;
     		}
-    		if(newi > 14 || newistart < 0){
+    		if(newi > 14 || newi < 0){
     			newi = lastcell.vert;
     		}
    

@@ -21,34 +21,22 @@ public class Main {
 		GomokuModel gm = new GomokuModel();
 		MiniMax mmx = new MiniMax();
 		Position pos = new Position(0, 0, 0, " ", gm);
-		
-     	pos.g.setBoard(5, "E", "O");
-     	pos.g.setBoard(5, "H", "O");
+		/*
      	pos.g.setBoard(5, "F", "O");
-     	pos.g.setBoard(5, "G", "O");
-     	pos.g.setBoard(7, "E", "O");
-     	pos.g.setBoard(6, "F", "O");
+     	pos.g.setBoard(6, "G", "O");
+     	pos.g.setBoard(7, "H", "O");
      	pos.g.setBoard(3, "C", "X");
      	pos.g.setBoard(6, "D", "X");
      	pos.g.showBoard("X");
      	pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", false);
      	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), "X");
      	pos.g.showBoard("X");
-     	pos.g.setBoard(6, "H", "O");
-     	pos.g.showBoard("O");
-     	pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", false);
-     	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), "X");
-     	pos.g.showBoard("X");
-     	pos.g.setBoard(6, "K", "O");
-     	pos.g.showBoard("O");
-     	pos = mmx.minimax(gm, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, "X", false);
-     	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), "X");
-     	pos.g.showBoard("X");
+		*/
+
+		
+		
 
 
-
-
-	
 		try{
 			
 		URL url = SetUp.Main.class.getProtectionDomain().getCodeSource().getLocation();
@@ -137,7 +125,6 @@ public class Main {
 		}catch(Exception e){
 			
 		}
-
 	}
 
 }
