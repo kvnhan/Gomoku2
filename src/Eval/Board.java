@@ -166,8 +166,8 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
             	}
             	else{       		
             		// Opponents paths always have negative scores
-            		currpath.score = -10;
-            		score -= 10;
+            		currpath.score = -1;
+            		score -= 1;
             	}
             	
             	// No additional checking needed
@@ -177,12 +177,12 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	// Ditto for paths of length 2
         	if (currpath.path.size() == 2){
             	if(currpath.player.equals(player)){
-            		currpath.score = 50;
-            		score += 50;
+            		currpath.score = 25;
+            		score += 25;
             	}
             	else{
-            		currpath.score = -50;
-            		score -= 50;
+            		currpath.score = -25;
+            		score -= 25;
             	}
             	
             	// No additional checking needed

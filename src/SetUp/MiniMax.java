@@ -152,7 +152,6 @@ public class MiniMax {
 		if(save == false){
 			preserveBoard(board);
 		}
-		
 		double best;
 		double tempBest;
 		HashMap<Position, String> myStone;
@@ -276,20 +275,6 @@ public class MiniMax {
 					myTurn = true;
 					newMoveForMin = newMove;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
-					
-					if(newMoveForMax.row == 3 && newMoveForMax.column == 4){
-						board.showBoard(player);
-						System.out.println(tempPos.score);
-					}if(newMoveForMax.row == 2 && newMoveForMax.column == 3){
-						board.showBoard(player);
-						System.out.println(tempPos.score);
-					}else{
-						board.showBoard(player);
-						System.out.println("Row: " + newMoveForMax.row);
-						System.out.println("Col: " + newMoveForMax.column);
-						System.out.println(tempPos.score);
-
-					}
 					board = undo(board, newMove);
 					if(bestSoFarForMin == null || bestSoFarForMin.score > tempPos.score){
 						bestSoFarForMin = newMove;
@@ -298,18 +283,17 @@ public class MiniMax {
 					if(tempPos.score < beta){
 						beta = tempPos.score;
 					}
+					if(tempPos.score < -1000){
+						return tempPos;
+					}
 					if(beta <= alpha){
 						break;
 					}
-					if(tempPos.score <= -1000){
-						board = reset();
-						bestSoFarForMin.score = tempPos.score;
-						return bestSoFarForMin;
-					}
 					moveList.removeFirst();
 				}
+				board = reset();
+				return bestSoFarForMin;
 			}
-			board = reset();
-			return bestSoFarForMin;	
 		}
+	
 }
