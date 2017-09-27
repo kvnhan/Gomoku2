@@ -9,10 +9,29 @@ Group Memebers:
 
 Instructions to Compile Code:
 -
-- java -jar bomb.jar
+- $ cd /PATH/testing/
+
+Initial
+- bom.jar
+- bomb.jar
+- referee.py
+
+TERMINAL ONE:
+- $ java -jar bomb.jar
+
+TERMINAL TWO:
+- $ java -jar bom.jar
+
+TERMINAL THREE:
+- $ python referee.py
+
+Creates:
+- end_game
+- move_file
+
 
 Utility Function:
-
+-
 - In our project, the utility function is actually incorporated into the 
 evaluation function. If the agent ever encounters a terminal board-- that is,
 a board where the game is over-- then that board receives an evaluation of 
