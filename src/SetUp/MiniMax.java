@@ -157,8 +157,6 @@ public class MiniMax {
 		myStone = board.getPlayerPiece(player);
 		
 		LinkedList<Position> moveList = new LinkedList<Position>();
-		
-		
 		// Get a list of threats and settle them
 		if(myTurn && stoneChange == false){
 			int tempScore = board.board.eval(player);
@@ -168,16 +166,33 @@ public class MiniMax {
 			p = evalThreat(threat, board, player);
 			if(p != null){
 				return p;
-			}
-				
-		}else if(stoneChange){
-			int tempScore = board.board.eval(player);
-			
-			if(tempScore <= -1000){
-				Position p = new Position(recentMove.row, recentMove.column, tempScore, player, board);
-				return p;
-			}
+			}else{
+				threat = board.board.pl.getLast();
+				p = evalThreat(threat, board, player);
+				if(p != null){
+					return p;
+				}
+			}	
 		}
+		
+		String p1;
+		//Evaluate the score of the board
+		if(depth == 0){
+			int finalScore; 
+			finalScore = board.board.eval(player);
+			p1 = player;
+			board = reset();
+			if(moveList.size() == 0){
+				p1 = "GameOver";
+				Position position = new Position(0,0, finalScore, player, board);
+				return position;
+			}
+			
+			Position move = moveList.getFirst();
+			Position position = new Position(move.row, move.column, finalScore, player, board);
+			return position;		
+		}	
+		
 		//Get empty locations around each player's stone locations
 		Position temp = null;
 		String opponent;
@@ -219,24 +234,8 @@ public class MiniMax {
 			}
 		}	
 		
-		String p;
-		//Evaluate the score of the board
-		if(depth == 0){
-			int finalScore; 
-			finalScore = board.board.eval(player);
-			p = player;
-			board = reset();
-			if(moveList.size() == 0){
-				p = "GameOver";
-				Position position = new Position(0,0, finalScore, player, board);
-				return position;
-			}
-			
-			Position move = moveList.getFirst();
-			Position position = new Position(move.row, move.column, finalScore, player, board);
-			return position;
-			
-		}
+		
+		
 		Position bestMove = null;
 		int opponentcore;
 
