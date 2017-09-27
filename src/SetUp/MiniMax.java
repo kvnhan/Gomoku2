@@ -15,7 +15,10 @@ public class MiniMax {
 	boolean myTurn = true;
 	boolean first = true;
 	boolean stoneChange = false;
-	Position recentMove = null;
+	Position bestSoFarForMin = null;
+	Position bestSoFarForMax = null;
+	Position newMoveForMin = null;
+	Position newMoveForMax = null;
 	LinkedList<Position> originalBoard = new LinkedList<Position>();
 	
 	// Keep the  original board before changes being made
@@ -158,6 +161,7 @@ public class MiniMax {
 		
 		LinkedList<Position> moveList = new LinkedList<Position>();
 		// Get a list of threats and settle them
+		
 		if(myTurn && stoneChange == false){
 			int tempScore = board.board.eval(player);
 			Path threat = null;
@@ -182,15 +186,12 @@ public class MiniMax {
 			finalScore = board.board.eval(player);
 			p1 = player;
 			board = reset();
-			if(moveList.size() == 0){
-				p1 = "GameOver";
-				Position position = new Position(0,0, finalScore, player, board);
+			Position move = newMoveForMin;
+			if(move != null){
+				Position position = new Position(move.row, move.column, finalScore, player, board);
 				return position;
 			}
-			
-			Position move = moveList.getFirst();
-			Position position = new Position(move.row, move.column, finalScore, player, board);
-			return position;		
+			return new Position(0,0, finalScore, player, board);		
 		}	
 		
 		//Get empty locations around each player's stone locations
@@ -236,7 +237,7 @@ public class MiniMax {
 		
 		
 		
-		Position bestMove = null;
+		
 		int opponentcore;
 
 		// Maximizer
@@ -246,18 +247,17 @@ public class MiniMax {
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = false;
 					stoneChange = true;
+					newMoveForMax = newMove;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
 					stoneChange = false;
 					board = undo(board, newMove);
-					if(bestMove == null || bestMove.score < tempPos.score){
-						bestMove = newMove;
-						bestMove.score = tempPos.score;
+					if(bestSoFarForMax == null || bestSoFarForMax.score < tempPos.score){
+						bestSoFarForMax = newMove;
+						bestSoFarForMax.score = tempPos.score;
 						
 					}
 					if(tempPos.score > alpha){
 						alpha = tempPos.score;
-						bestMove = newMove;
-						bestMove.score = tempPos.score;
 					}
 					if(beta <= alpha){
 						break;
@@ -267,38 +267,49 @@ public class MiniMax {
 					
 				}
 				board = reset();
-				return bestMove;
+				return bestSoFarForMax;
 			// Minimizer
 			}else{
 				while(moveList.size() > 0){
 					Position newMove = moveList.getFirst();
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = true;
-					recentMove = newMove;
+					newMoveForMin = newMove;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
+					
+					if(newMoveForMax.row == 3 && newMoveForMax.column == 4){
+						board.showBoard(player);
+						System.out.println(tempPos.score);
+					}if(newMoveForMax.row == 2 && newMoveForMax.column == 3){
+						board.showBoard(player);
+						System.out.println(tempPos.score);
+					}else{
+						board.showBoard(player);
+						System.out.println("Row: " + newMoveForMax.row);
+						System.out.println("Col: " + newMoveForMax.column);
+						System.out.println(tempPos.score);
+
+					}
 					board = undo(board, newMove);
-					if(bestMove == null || bestMove.score > tempPos.score){
-						bestMove = newMove;
-						
-						
+					if(bestSoFarForMin == null || bestSoFarForMin.score > tempPos.score){
+						bestSoFarForMin = newMove;
+						bestSoFarForMin.score = tempPos.score;
 					}
 					if(tempPos.score < beta){
 						beta = tempPos.score;
-						bestMove = newMove;
-						bestMove.score = tempPos.score;
 					}
 					if(beta <= alpha){
 						break;
 					}
 					if(tempPos.score <= -1000){
 						board = reset();
-						bestMove.score = tempPos.score;
-						return bestMove;
+						bestSoFarForMin.score = tempPos.score;
+						return bestSoFarForMin;
 					}
 					moveList.removeFirst();
 				}
 			}
 			board = reset();
-			return bestMove;	
+			return bestSoFarForMin;	
 		}
 }
