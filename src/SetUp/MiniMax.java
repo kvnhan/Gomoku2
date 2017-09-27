@@ -15,8 +15,6 @@ public class MiniMax {
 	boolean myTurn = true;
 	boolean first = true;
 	boolean stoneChange = false;
-	Position bestSoFarForMin = null;
-	Position bestSoFarForMax = null;
 	Position newMoveForMin = null;
 	Position newMoveForMax = null;
 	LinkedList<Position> originalBoard = new LinkedList<Position>();
@@ -238,6 +236,7 @@ public class MiniMax {
 		
 		
 		int opponentcore;
+		Position bestMove = null;
 
 		// Maximizer
 			if(myTurn){
@@ -246,13 +245,12 @@ public class MiniMax {
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = false;
 					stoneChange = true;
-					newMoveForMax = newMove;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
 					stoneChange = false;
 					board = undo(board, newMove);
-					if(bestSoFarForMax == null || bestSoFarForMax.score < tempPos.score){
-						bestSoFarForMax = newMove;
-						bestSoFarForMax.score = tempPos.score;
+					if(bestMove == null || bestMove.score < tempPos.score){
+						bestMove = newMove;
+						bestMove.score = tempPos.score;
 						
 					}
 					if(tempPos.score > alpha){
@@ -266,7 +264,7 @@ public class MiniMax {
 					
 				}
 				board = reset();
-				return bestSoFarForMax;
+				return bestMove;
 			// Minimizer
 			}else{
 				while(moveList.size() > 0){
@@ -276,9 +274,9 @@ public class MiniMax {
 					newMoveForMin = newMove;
 					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
 					board = undo(board, newMove);
-					if(bestSoFarForMin == null || bestSoFarForMin.score > tempPos.score){
-						bestSoFarForMin = newMove;
-						bestSoFarForMin.score = tempPos.score;
+					if(bestMove == null || bestMove.score > tempPos.score){
+						bestMove = newMove;
+						bestMove.score = tempPos.score;
 					}
 					if(tempPos.score < beta){
 						beta = tempPos.score;
@@ -292,7 +290,7 @@ public class MiniMax {
 					moveList.removeFirst();
 				}
 				board = reset();
-				return bestSoFarForMin;
+				return bestMove;
 			}
 		}
 	
