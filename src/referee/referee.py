@@ -325,4 +325,4 @@ def play_gomoku(team1, team2):
 if __name__ == "__main__":
     bom = "bom"
     bomb = "bomb"
-    play_gomoku(bomb, bomb)
+    play_gomoku(bom, bomb)
