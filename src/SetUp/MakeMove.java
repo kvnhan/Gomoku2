@@ -39,7 +39,7 @@ public class MakeMove {
 	            LinkedList<String> goFiles = new LinkedList<String>();
 	            File dir = new File(parentPath);
 	            for (File file : dir.listFiles()) {
-	              if (file.getName().equals("bomb.go")) {
+	              if (file.getName().equals("metzkhanwilderV2.go")) {
 	                goFiles.add(file.getName());
 	              }
 	            }
@@ -65,17 +65,17 @@ public class MakeMove {
 			     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
 			     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, false);
 			     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);
-			     	        	pos.g.showBoard(mystone);
-			     	        	String move = "bomb " + pos.g.parseCol(pos.column + 1) + " " + (pos.row + 1);
+			     	        	pos.g.showBoard(mystone, "metzkhanwilderV2");
+			     	        	String move = "metzkhanwilderV2 " + pos.g.parseCol(pos.column + 1) + " " + (pos.row + 1);
 			     	        	pos.g.writeFile(textFile, move);
 			     	        	went = true;
 			     	        	continue;
 			     	        }else{
 				     	        mystone = "O";
-			    	        	String move = "bomb H 7";
+			    	        	String move = "metzkhanwilderV2 H 7";
 			    	        	pos.g.writeFile(textFile, move);
 			    	        	pos.g.setBoard(7,"H", mystone);
-			    	        	pos.g.showBoard(mystone);
+			    	        	pos.g.showBoard(mystone, "metzkhanwilderV2");
 			    	        	went = true;
 			    	        	continue;
 			     	        }
@@ -98,7 +98,26 @@ public class MakeMove {
 	            	went = false;
 	            }
 	            
-	        }else{	        	
+	        }else{
+	        	FileReader f = null;
+	    		BufferedReader b = null;
+	            String winner = parentPath + fileSeparator + "end_game";
+	    		try {
+     				f = new FileReader(winner);
+     				b = new BufferedReader(f);
+     				sCurrentLine = b.readLine();
+     				String[] tkn = sCurrentLine.split("\\s+");
+     				if(tkn[1].equals("metzkhanwilderV2")){
+     					System.out.println("I Win.");
+     				}else{
+     					pos.g.showBoard(mystone, "metzkhanwilderV2");
+     					System.out.println("I Lose.");
+     				}
+     				f.close();
+	    		}catch(Exception e){
+	    			e.printStackTrace();
+	    		}
+	    		
 	        	System.out.println("Good Game");
 	        	break;
 	        	
