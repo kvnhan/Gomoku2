@@ -161,8 +161,8 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	// Paths of length 1 are worth very little
         	if (currpath.path.size() == 1){
             	if(currpath.player.equals(player)){
-            		currpath.score = 10;
-            		score += 10;
+            		currpath.score = 1;
+            		score += 1;
             	}
             	else{       		
             		// Opponents paths always have negative scores
@@ -245,13 +245,25 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         		// A path of size 4 is an automatic win
         		// (Cannot be blocked)
         		if (currpath.path.size() == 4){
-        			currpath.score = 10000000;
-        			tempscore += 10000000;
+        			if(currpath.player.equals(player)){
+                		currpath.score = 10000000;
+                		score += 10000000;
+                	}
+                	else{
+                		currpath.score = -10000000;
+                		score -= 10000000;
+                	}
         		}
         		// A path of size 3 is okay
         		else if (currpath.path.size() == 3){
-        			currpath.score = 1000;
-        			tempscore += 1000;
+        			if(currpath.player.equals(player)){
+                		currpath.score = 1000;
+                		score += 1000;
+                	}
+                	else{
+                		currpath.score = -1000;
+                		score -= 1000;
+                	}
         		}
 
         	}
@@ -260,13 +272,26 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	else if(cells[newi][newj].equals(" ")|| cells[newistart][newjstart].equals(" ")){
         		// A path of size 4 is good but not a guaranteed win
         		if (currpath.path.size() == 4){
-        			currpath.score = 2000;
-        			tempscore += 2000;
+        			if(currpath.player.equals(player)){
+                		currpath.score = 2000;
+                		score += 2000;
+                	}
+                	else{
+                		currpath.score = -2000;
+                		score -= 2000;
+                	}
         		}
         		// A path of size 3 is okay
         		else if (currpath.path.size() == 3){
-        			currpath.score = 500;
-        			tempscore += 500;
+        			if(currpath.player.equals(player)){
+                		currpath.score = 200;
+                		score += 200;
+                	}
+                	else{
+                		currpath.score = -200;
+                		score -= 200;
+                		
+                	}
         		}
         	}
     		
