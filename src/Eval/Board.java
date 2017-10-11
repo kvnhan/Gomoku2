@@ -269,7 +269,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         	}
     		
     		// If only one boundary is empty...
-        	else if(cells[newi][newj].equals(" ")|| cells[newistart][newjstart].equals(" ")){
+        	else if(cells[newi][newj].equals(" ") || cells[newistart][newjstart].equals(" ")){
         		// A path of size 4 is good but not a guaranteed win
         		if (currpath.path.size() == 4){
         			if(currpath.player.equals(player)){
@@ -289,7 +289,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
                 	}
                 	else{
                 		currpath.score = -200;
-                		score -= 200;
+                		score -= 250;
                 		
                 	}
         		}
@@ -302,7 +302,7 @@ private Integer scoreBoard(LinkedList<Path> pathlist, String player) {
         		score += tempscore;
         	}else{
         		score -= tempscore;
-        		currpath.score = -currpath.score;
+        		
         	}
         }
 
@@ -437,16 +437,17 @@ private Integer searchAroundDiagDown(int i, int j, Path p, String player) {
 
 private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	Boolean visited = false;
-
 	if (j < 14 && i > 0){
 		if (cells[i-1][j+1] == player){
 			Cell c = new Cell(i-1,j+1);
+			c.visited = false;
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j+1 && c1.vert == i-1){
-					visited = true;
+					c1.visited = true;
+					c.visited = true;
 				}
 			}
-			if(!visited){
+			if(!c.visited){
 				p.path.addFirst(c);
 				searchAroundDiagUp(i-1, j+1, p, player);
 			}
@@ -455,13 +456,15 @@ private Integer searchAroundDiagUp(int i, int j, Path p, String player) {
 	if(i < 14 && j > 0){
 		if (cells[i+1][j-1] == player){
 			Cell c = new Cell(i+1,j-1);
+			c.visited = false;
 			for (Cell c1 : p.path) {
 				if(c1.horiz == j-1 && c1.vert == i+1){
-					visited = true;
+					c1.visited = true;
+					c.visited = true;
 				}
 			}
-			if(!visited){
-				p.path.addFirst(c);
+			if(!c.visited){
+				p.path.addLast(c);
 				searchAroundDiagUp(i+1, j-1, p, player);
 			}
 		}

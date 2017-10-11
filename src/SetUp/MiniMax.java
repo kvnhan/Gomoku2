@@ -144,7 +144,7 @@ public class MiniMax {
 					
 		return move;
 	}
-	public Position minimax(GomokuModel board, int depth, double alpha, double beta, String player, boolean save){
+	public Position minimax(GomokuModel board, int depth, double alpha, double beta, String player, boolean save, LinkedList<Position> list){
 		Position tempPos;
 		Board b = new Board();
 		if(save == false){
@@ -167,13 +167,7 @@ public class MiniMax {
 			p = evalThreat(threat, board, player);
 			if(p != null){
 				return p;
-			}else{
-				threat = board.board.pl.getLast();
-				p = evalThreat(threat, board, player);
-				if(p != null){
-					return p;
 				}
-			}	
 		}
 		
 		String p1;
@@ -194,7 +188,7 @@ public class MiniMax {
 		//Get empty locations around each player's stone locations
 		Position temp = null;
 		String opponent;
-		for(Position p: myStone.keySet()){
+		for(Position p: list){
 			for(Position coord: board.lookAround(p).keySet()){
 				if(temp == null){
 					temp = coord;
@@ -216,25 +210,8 @@ public class MiniMax {
 		}else{
 			opponent = "X";
 		}
-		for(Position position: board.getPlayerPiece(opponent).keySet()){
-			for(Position coord: board.lookAround(position).keySet()){
-				if(temp == null){
-					temp = coord;
-					moveList.add(coord);
-					continue;
-				}
-				if((temp.row == coord.row && temp.column != coord.column) ||
-				(temp.row != coord.row && temp.column != coord.column)||
-				(temp.row != coord.row && temp.column == coord.column)){
-					temp = coord;
-					moveList.add(coord);				
-				}
-			}
-		}	
 		
-		
-		
-		
+				
 		int opponentcore;
 		Position bestMove = null;
 
@@ -245,7 +222,7 @@ public class MiniMax {
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = false;
 					stoneChange = true;
-					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
+					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true, list);
 					stoneChange = false;
 					board = undo(board, newMove);
 					if(bestMove == null || bestMove.score < tempPos.score){
@@ -272,7 +249,7 @@ public class MiniMax {
 					board.makeMove(newMove.row, newMove.column, player);
 					myTurn = true;
 					newMoveForMin = newMove;
-					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true);
+					tempPos = minimax(board, depth - 1, alpha, beta, opponent, true, list);
 					board = undo(board, newMove);
 					if(bestMove == null || bestMove.score > tempPos.score){
 						bestMove = newMove;
@@ -281,7 +258,7 @@ public class MiniMax {
 					if(tempPos.score < beta){
 						beta = tempPos.score;
 					}
-					if(tempPos.score < -1000){
+					if(tempPos.score < -1500){
 						return tempPos;
 					}
 					if(beta <= alpha){

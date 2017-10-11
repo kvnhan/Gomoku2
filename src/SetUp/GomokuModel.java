@@ -38,6 +38,11 @@ public class GomokuModel {
 		columns.put("O", 15);
 	}
 	
+	public int convert(String letter){
+		setUpCol();
+		int newC = columns.get(letter.toUpperCase()) - 1;
+		return newC;
+	}
 	//Write to move_file 
 	public void writeFile(String path, String move){
 		FileWriter out = null;

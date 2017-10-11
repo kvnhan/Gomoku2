@@ -18,6 +18,7 @@ public class MakeMove {
 		
 		FileReader fr = null;
 		BufferedReader br = null;
+		LinkedList<Position> lastMoves = new LinkedList<Position>();
 
 
 		try{
@@ -63,9 +64,12 @@ public class MakeMove {
 			     	        		otherstone = "X";
 			     	        	}
 			     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
-			     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, false);
+			     	        	Position lastM = new Position(Integer.parseInt(token[2]), pos.g.convert(token[1]), 0.0, otherstone, pos.g);
+			     	        	lastMoves.addFirst(lastM);
+			     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, false, lastMoves);
 			     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);
 			     	        	pos.g.showBoard(mystone, "metzkhanwilderV2");
+			     	        	lastMoves.addFirst(pos);
 			     	        	String move = "metzkhanwilderV2 " + pos.g.parseCol(pos.column + 1) + " " + (pos.row + 1);
 			     	        	pos.g.writeFile(textFile, move);
 			     	        	went = true;
@@ -119,6 +123,7 @@ public class MakeMove {
 	    		}
 	    		
 	        	System.out.println("Good Game");
+	        	
 	        	break;
 	        	
 	        }
