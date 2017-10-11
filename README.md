@@ -7,27 +7,14 @@ Group Memebers:
 - Kien Nhan
 - Joseph Wilder
 
-Instructions to Compile Code:
+Instructions to Run:
 -
-- $ cd /PATH/testing/
 
 Initial
-- bom.jar
-- bomb.jar
-- referee.py
+- metzkhanwilderV2.jar
 
-TERMINAL ONE:
-- $ java -jar bomb.jar
-
-TERMINAL TWO:
-- $ java -jar bom.jar
-
-TERMINAL THREE:
-- $ python referee.py
-
-Creates:
-- end_game
-- move_file
+TERMINAL:
+- $ java -jar metzkhanwilderV2.jar
 
 
 Utility Function:
@@ -82,22 +69,29 @@ behind this strategy is discussed below.
 Results:
 -
 - Tests Ran:
-	- x
-- Program play against human?:
- 	- x
+	- We have a test for a situation where there a chain of 3 and our program would block the path
+	- We have a test for a situation where chain of 2 and 1 and our program stop it from turning into a chain of 4.
 - Program play against self?:
- 	- x
-- Program play against other programs?:
-	- x
+ 	- We tested our program against itself
 - Program Performance:
-	- x
+	- The decision making is fast
+	- It does well in defending the opponent
+	- It has a hard time deciding when to defend or attack, so it would 	 sometimes ignore a threat for a chance to attack.
 - Strengths:
-	- x
+	- It recognizes a threat, meaning a chain of 3 and block it immediately
+	- It also know when to attack, especially when there exists a chain of 3
+	- It also addresses a situation where there is an empty space between a 
+	  chain of 2 and 1 and stop it from turning into a chain of 4.
+	- Turning defense into offense
+	- Attacks relentlessly
 - Weaknesses:
-	- x
+	- If the pieces are spread apart, the program will not recognize
+	  unexpected move.
+	- Our depth limited is only 2, so predicting moves far ahead is not possible
+	- It sometimes, misses a chance to block or a chance to change put pressure on the opponent.
 	
 Discussion on why evaluation function and heuristics chosen are good choices:
-
+-
 - While not perfect, our evaluation function is able to judge the relative
 utility of possible boards and make an informed choice from this information.
 Our particular method mimics the way a human player might evaluate the board,
