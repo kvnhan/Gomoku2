@@ -64,7 +64,7 @@ public class MakeMove {
 			     	        		otherstone = "X";
 			     	        	}
 			     	        	pos.g.setBoard(Integer.parseInt(token[2]), token[1], otherstone);
-			     	        	Position lastM = new Position(Integer.parseInt(token[2]), pos.g.convert(token[1]), 0.0, otherstone, pos.g);
+			     	        	Position lastM = new Position(Integer.parseInt(token[2]) - 1, pos.g.convert(token[1]), 0.0, otherstone, pos.g);
 			     	        	lastMoves.addFirst(lastM);
 			     	        	pos = mmx.minimax(pos.g, 2, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, mystone, false, lastMoves);
 			     	        	pos.g.setBoard(pos.row + 1, pos.g.parseCol(pos.column + 1), mystone);

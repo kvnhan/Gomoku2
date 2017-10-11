@@ -162,9 +162,15 @@ public class MiniMax {
 		if(myTurn && stoneChange == false){
 			int tempScore = board.board.eval(player);
 			Path threat = null;
+			Path chance = null;
 			threat = board.board.pl.getFirst();
+			chance = board.board.pl.getLast();
 			Position p = null;
-			p = evalThreat(threat, board, player);
+			if(chance.path.size() > threat.path.size()){
+				p = evalThreat(chance, board, player);
+			}else{
+				p = evalThreat(threat, board, player);
+			}
 			if(p != null){
 				return p;
 				}
@@ -257,9 +263,6 @@ public class MiniMax {
 					}
 					if(tempPos.score < beta){
 						beta = tempPos.score;
-					}
-					if(tempPos.score < -1500){
-						return tempPos;
 					}
 					if(beta <= alpha){
 						break;

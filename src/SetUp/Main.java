@@ -31,7 +31,7 @@ public class Main {
 	
      	
      	m.play(pos, mmx, gm);
-     	
+     	t.getTitle();
      	t.getEnd();
 
 	}
